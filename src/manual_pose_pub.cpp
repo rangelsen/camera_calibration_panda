@@ -66,7 +66,7 @@ bool get_user_position(double* x, double* y, double* z) {
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-    ros::init(argc, argv, "main");
+    ros::init(argc, argv, "manual_user");
     ros::NodeHandle nh;
 
     ros::Publisher pose_pub = nh.advertise<geometry_msgs::Pose>("pose", 100);
