@@ -49,7 +49,7 @@ void updatePandaStatus(std_msgs::Int16 status) {
 ////////////////////////////////////////////////////////////////////////////////
 void calibrate() {
 
-    ROS_INFO("Capturing, estimating pose, and writing to file");
+    ROS_INFO("Working");
 
 #ifdef DEBUG
 

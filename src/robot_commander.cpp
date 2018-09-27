@@ -36,37 +36,34 @@ int main(int argc, char** argv) {
 
     while (true) {
 
-        if (targets_.size() > 0) {
+        for (uint32_t i = 0; i < targets_.size(); i++) {
 
             status_msg.data = PANDA_MOVING;
             panda_status_pub.publish(status_msg);
 
-            for (uint32_t i = 0; i < targets_.size(); i++) {
+            ROS_INFO("Moving to target");
+            geometry_msgs::Pose target = targets_.front();
+            targets_.pop();
 
-                ROS_INFO("Moving to target");
-                geometry_msgs::Pose target = targets_.front();
-                targets_.pop();
+            move_group.setPoseTarget(target);
+            moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+            moveit::planning_interface::MoveItErrorCode success = move_group.plan(my_plan);
 
-                move_group.setPoseTarget(target);
-                moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-                moveit::planning_interface::MoveItErrorCode success = move_group.plan(my_plan);
+            if (success == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
 
-                if (success == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+                move_group.move();
 
-                    move_group.move();
-
-                    ROS_INFO("Signalling stop");
-                    status_msg.data = PANDA_STOPPED;
-                    panda_status_pub.publish(status_msg);
-                }
-                else
-                    ROS_INFO("Error: No path available to target pose");
+                ROS_INFO("Signalling stop");
+                status_msg.data = PANDA_STOPPED;
+                panda_status_pub.publish(status_msg);
             }
-        }
-        else {
-
+            else
+                ROS_INFO("Error: No path available to target pose");
         }
     }
 
     return 0;
 }
+
+/// @file
+
