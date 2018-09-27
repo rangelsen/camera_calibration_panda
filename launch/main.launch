@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="db" default="false" />
-  <arg name="debug" default="false" />
+  <arg name="debug" default="true" />
   <arg name="use_gui" default="false" />
   <arg name="load_gripper" default="true" />
   <arg name="db_path" default="$(find panda_moveit_config)/default_warehouse_mongo_db" />
@@ -24,6 +24,6 @@
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
   </include>
 
-  <node name="robot" type="robot" pkg="camera_calibration_panda" />
+  <node name="robot" type="robot" pkg="camera_calibration_panda" output="screen" />
   <node name="main" type="main" pkg="camera_calibration_panda" output="screen" />
 </launch>

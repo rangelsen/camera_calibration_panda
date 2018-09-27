@@ -4,7 +4,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-// #include <opencv2/aruco/charuco.hpp>
+#include <opencv2/aruco/charuco.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 typedef enum {
@@ -39,6 +39,7 @@ geometry_msgs::Pose generateNextTarget(cv::Mat current_pose) {
 ////////////////////////////////////////////////////////////////////////////////
 void updatePandaStatus(std_msgs::Int16 status) {
 
+    ROS_INFO("Received status update");
     panda_status_ = (PandaStatus) status.data;
 }
 
@@ -53,7 +54,7 @@ int main(int argc, char** argv) {
         100, update_robot_state);
     */
 
-    ros::Subscriber panda_status_sub = nh.subscribe("status", 100, updatePandaStatus);
+    ros::Subscriber panda_status_sub = nh.subscribe("panda_status", 100, updatePandaStatus);
     ros::Publisher pose_pub = nh.advertise<geometry_msgs::Pose>("pose", 100);
 
     uint32_t i = 0;
@@ -65,6 +66,7 @@ int main(int argc, char** argv) {
         if (panda_status_ == STOPPED) {
 
             ROS_INFO("Capturing, estimating pose, and writing to file");
+
             /*
             cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
             cv::Mat board_pose = calib.EstimateCharucoPose(image_copy, &camera);
@@ -85,7 +87,9 @@ int main(int argc, char** argv) {
 
             ROS_INFO("Published next target");
         }
-        else if (panda_status_ = MOVING) { }
+        else if (panda_status_ = MOVING) {
+        
+        }
 
         ros::spinOnce();
     }

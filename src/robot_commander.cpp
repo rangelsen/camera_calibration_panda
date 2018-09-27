@@ -46,6 +46,7 @@ int main(int argc, char** argv) {
 
                 move_group.move();
 
+                ROS_INFO("Signalling stop");
                 std_msgs::Int16 status_msg;
                 status_msg.data = 0;
                 panda_status_pub.publish(status_msg);
