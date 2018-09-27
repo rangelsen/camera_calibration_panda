@@ -1,3 +1,4 @@
+#include <time.h>
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
 #include <std_msgs/Int16.h>
@@ -5,6 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/aruco/charuco.hpp>
+#include <Eigen/Geometry>
 
 #include "panda_status.h"
 #include "util.hpp"
@@ -28,7 +30,12 @@ geometry_msgs::Pose generateNextTarget(cv::Mat current_pose) {
         target.position.x = x;
         target.position.y = y;
         target.position.z = z;
-        target.orientation.x = 1.0;
+
+        Eigen::Quaterniond q_target = Util::UniformRandom();
+        target.orientation.x = q_target.x();
+        target.orientation.y = q_target.y();
+        target.orientation.z = q_target.z();
+        target.orientation.w = q_target.w();
     }
     else {
 
@@ -73,6 +80,8 @@ void calibrate() {
 
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
+
+    srand(time(NULL));
 
     ros::init(argc, argv, "main");
     ros::NodeHandle nh;

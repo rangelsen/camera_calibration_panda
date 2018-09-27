@@ -65,3 +65,23 @@ bool Util::getUserPosition(double* x, double* y, double* z) {
         return true;
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+Eigen::Quaterniond Util::UniformRandom() {
+
+    double u1 = (double) rand() / RAND_MAX;
+    double u2 = (double) rand() / RAND_MAX;
+    double u3 = (double) rand() / RAND_MAX;
+
+    Eigen::Quaterniond quat;
+
+    quat.w() = sqrt(1.0 - u1) * sinf(M_2_PI * u2);
+    quat.x() = sqrt(1.0 - u1) * cosf(M_2_PI * u2);
+    quat.y() = sqrt(u1) * sinf(M_2_PI * u3);
+    quat.z() = sqrt(u1) * cosf(M_2_PI * u3);
+
+    return quat;
+}
+
+/// @file
+
