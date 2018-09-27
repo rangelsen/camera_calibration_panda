@@ -3,6 +3,8 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <std_msgs/Int16.h>
 
+#include "panda_status.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 static std::queue<geometry_msgs::Pose> targets_;
 
@@ -28,31 +30,41 @@ int main(int argc, char** argv) {
     moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP_);
     move_group.startStateMonitor();
 
+    std_msgs::Int16 status_msg;
+    status_msg.data = PANDA_STOPPED;
+    panda_status_pub.publish(status_msg);
+
     while (true) {
 
-        for (uint32_t i = 0; i < targets_.size(); i++) {
+        if (targets_.size() > 0) {
 
-            std_msgs::Int16 status_msg;
-            status_msg.data = 1;
+            status_msg.data = PANDA_MOVING;
             panda_status_pub.publish(status_msg);
-            geometry_msgs::Pose target = targets_.front();
-            targets_.pop();
 
-            move_group.setPoseTarget(target);
-            moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-            moveit::planning_interface::MoveItErrorCode success = move_group.plan(my_plan);
+            for (uint32_t i = 0; i < targets_.size(); i++) {
 
-            if (success == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+                ROS_INFO("Moving to target");
+                geometry_msgs::Pose target = targets_.front();
+                targets_.pop();
 
-                move_group.move();
+                move_group.setPoseTarget(target);
+                moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+                moveit::planning_interface::MoveItErrorCode success = move_group.plan(my_plan);
 
-                ROS_INFO("Signalling stop");
-                std_msgs::Int16 status_msg;
-                status_msg.data = 0;
-                panda_status_pub.publish(status_msg);
+                if (success == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+
+                    move_group.move();
+
+                    ROS_INFO("Signalling stop");
+                    status_msg.data = PANDA_STOPPED;
+                    panda_status_pub.publish(status_msg);
+                }
+                else
+                    ROS_INFO("Error: No path available to target pose");
             }
-            else
-                ROS_INFO("Error: No path available to target pose");
+        }
+        else {
+
         }
     }
 

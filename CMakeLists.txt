@@ -42,11 +42,13 @@ catkin_package(
 include_directories(SYSTEM ${THIS_PACKAGE_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
 
+add_library(util STATIC src/util.cpp)
+
 #Add all executables
 add_executable(main src/main.cpp)
 add_executable(robot src/robot_commander.cpp)
 add_executable(manual_pose_pub src/manual_pose_pub.cpp)
 
-target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)
 target_link_libraries(robot ${catkin_LIBRARIES})
-target_link_libraries(manual_pose_pub ${catkin_LIBRARIES})
+target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} util)
