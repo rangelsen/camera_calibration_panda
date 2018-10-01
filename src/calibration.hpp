@@ -23,8 +23,8 @@ public:
 	static cv::Mat estimateBoardCorner(std::vector<int> ids,
 		std::vector<cv::Vec3d> rot, std::vector<cv::Vec3d> trans);
 
-	std::vector<cv::Mat> computeEndeffToCharuco(std::vector<cv::Mat>* eTb,
-		std::vector<cv::Mat>* cTch, cv::Mat bTc);
+	static std::vector<cv::Mat> computeEndeffToCharuco(
+		std::vector<cv::Mat>* bTe, std::vector<cv::Mat>* cTch, cv::Mat bTc);
 
 private:
 	

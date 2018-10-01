@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "util.hpp"
 
@@ -111,6 +112,95 @@ void Util::writeToFile(std::string filepath, cv::Mat board_pose, int pose_idx) {
 	file.open(filepath, std::ios::out | std::ios::app);
 	file << pose_str << std::endl;
 	file.close();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Util::printCvMat(cv::Mat mat) {
+
+	for (uint32_t i = 0; i < mat.rows; i++) {
+
+		for (uint32_t j = 0; j < mat.cols; j++) {
+
+			std::cout << std::setprecision(4) << mat.at<double>(i, j) << " ";
+		}
+
+		std::cout << std::endl;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector<cv::Mat> Util::readPosesFromFile(const std::string filename,
+	std::vector<int>* indices) {
+
+	std::ifstream file(filename);
+	std::string raw_line;
+
+	std::vector<cv::Mat> poses;
+
+	while(std::getline(file, raw_line)) {
+
+		int i = 0;
+		while (raw_line[i++] != ',') ;
+
+		int index = std::atoi(raw_line.substr(0, i).c_str());
+
+		if (indices)
+			indices->push_back(index);
+
+		cv::Mat pose = lineToPose(raw_line.substr(i, raw_line.length()));
+		poses.push_back(pose);
+	}
+
+	return poses;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+cv::Mat Util::lineToPose(std::string line) {
+
+	std::vector<float> vals = splitf(line, ",");
+
+	cv::Mat pose(cv::Size(4, 4), CV_64FC1);
+
+	for (uint8_t i = 0; i < pose.rows; i++)
+		for (uint8_t j = 0; j < pose.cols; j++)
+			pose.at<double>(i, j) = vals[i * 4 + j];
+
+	return pose;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector<float> Util::splitf(std::string str, std::string delim) {
+
+	std::vector<float> vals;
+	uint32_t search_idx = 0;
+	bool is_first = true;
+	uint32_t n_entries = 0;
+
+	while (n_entries < 16) {
+
+		uint32_t start_cell;
+
+		if (is_first) {
+
+			start_cell = 0;
+			is_first = false;
+		}
+		else
+			start_cell = str.find(delim, search_idx) + 1;
+
+		uint32_t end_cell = str.find(delim, start_cell + 1);
+		uint32_t len = end_cell - start_cell;
+
+		std::string cell = str.substr(start_cell, len);
+		float val = std::stof(cell);
+
+		vals.push_back(val);
+
+		search_idx = end_cell;
+		n_entries++;
+	}
+
+	return vals;
 }
 
 /// @file
