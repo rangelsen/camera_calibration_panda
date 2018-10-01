@@ -119,13 +119,13 @@ void Util::printCvMat(cv::Mat mat) {
 
 	for (uint32_t i = 0; i < mat.rows; i++) {
 
-		for (uint32_t j = 0; j < mat.cols; j++) {
-
+		for (uint32_t j = 0; j < mat.cols; j++)
 			std::cout << std::setprecision(4) << mat.at<double>(i, j) << " ";
-		}
 
 		std::cout << std::endl;
 	}
+
+	std::cout << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

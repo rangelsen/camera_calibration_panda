@@ -132,26 +132,6 @@ int main(int argc, char** argv) {
         ros::spinOnce();
     }
 
-	{ // Run verification
-
-		std::vector<int> bTe_indices;
-		std::vector<cv::Mat> bTe  = Util::readPosesFromFile("res/endeff_poses.csv",
-			&bTe_indices);
-
-		std::vector<int> cTch_indices;
-		std::vector<cv::Mat> cTch = Util::readPosesFromFile("res/board_poses.csv",
-			&cTch_indices);
-
-		std::vector<cv::Mat> bTc  = Util::readPosesFromFile("res/camera_pose.csv", NULL);
-
-		std::vector<cv::Mat> eTch = Calibration::computeEndeffToCharuco(&bTe, &cTch, bTc[0]);
-
-		for (uint32_t j = 0; j < eTch.size(); j++) {
-			
-			Util::printCvMat(eTch[i]);
-		}
-	}
-
     return 0;
 }
 

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="main" type="main" pkg="camera_calibration_panda" output="screen" />
+</launch>
