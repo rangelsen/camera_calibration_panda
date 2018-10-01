@@ -12,7 +12,7 @@
 #include "util.hpp"
 #include "calibration.hpp"
 
-#define DEBUG false
+#define DEBUG 1
 
 ////////////////////////////////////////////////////////////////////////////////
 static cv::Mat endeff_pose_;
@@ -60,17 +60,22 @@ void updatePandaStatus(std_msgs::Int16 status) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void calibrate(Calibration* calib, CameraSensor* camera, cv::Mat endeff_pose,
-	cv::Mat image, uint32_t* i) {
+void calibrate() {
 
     ROS_INFO("Working");
 
 #if DEBUG
 
-    sleep(10);
+    sleep(5);
 #else
 
-	cv::Mat image_copy;
+	static cv::Ptr<cv::aruco::Dictionary> dict = 
+		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+
+	static Calibration calib(dict);
+	static CameraSensor camera;
+
+	cv::Mat image_copy, img;
     cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
     cv::Mat board_pose = calib->estimateCharucoPose(image_copy, camera);
 
@@ -100,13 +105,6 @@ int main(int argc, char** argv) {
 
     ros::Publisher pose_pub = nh.advertise<geometry_msgs::Pose>("pose", 100);
 
-	cv::Ptr<cv::aruco::Dictionary> dict = 
-		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-
-	Calibration calib(dict);
-	CameraSensor camera;
-
-    uint32_t i = 0;
     bool is_first = true;
 
     while (ros::ok()) {
@@ -116,11 +114,7 @@ int main(int argc, char** argv) {
             if (is_first)
                 is_first = false;
             else {
-				
-				cv::Mat img;
-				camera.CaptureIr(&img);
-
-                calibrate(&calib, &camera, endeff_pose_, img, &i);
+                calibrate();
 			}
 
             geometry_msgs::Pose next_target = generateNextTarget(endeff_pose_);
