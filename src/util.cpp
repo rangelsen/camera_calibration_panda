@@ -117,10 +117,12 @@ void Util::writeToFile(std::string filepath, cv::Mat board_pose, int pose_idx) {
 ////////////////////////////////////////////////////////////////////////////////
 void Util::printCvMat(cv::Mat mat) {
 
+	std::cout << "cv::Mat" << std::endl;
+
 	for (uint32_t i = 0; i < mat.rows; i++) {
 
 		for (uint32_t j = 0; j < mat.cols; j++)
-			std::cout << std::setprecision(4) << mat.at<double>(i, j) << " ";
+			std::cout << std::setprecision(6) << mat.at<double>(i, j) << " ";
 
 		std::cout << std::endl;
 	}

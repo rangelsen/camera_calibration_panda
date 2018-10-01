@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++11 -g)
 
 find_package(catkin REQUIRED
   COMPONENTS
@@ -44,7 +44,10 @@ add_library(util STATIC src/util.cpp)
 add_library(calibration STATIC src/calibration.cpp)
 add_library(camera STATIC src/camerasensor.cpp)
 
-set_target_properties(realsense2 PROPERTIES IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/librealsense2.so")
+set_target_properties(realsense2
+	PROPERTIES IMPORTED_LOCATION
+	"/usr/lib/x86_64-linux-gnu/librealsense2.so"
+)
 
 #Add all executables
 add_executable(main src/main.cpp)
@@ -55,5 +58,6 @@ add_executable(verification src/verification.cpp)
 target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util calibration camera realsense2)
 target_link_libraries(robot ${catkin_LIBRARIES})
 target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)
-target_link_libraries(calibration ${OpenCV_LIBRARIES})
-target_link_libraries(verification ${OpenCV_LIBRARIES} util)
+target_link_libraries(camera ${OpenCV_LIBRARIES} realsense2)
+target_link_libraries(calibration ${OpenCV_LIBRARIES} camera)
+target_link_libraries(verification ${OpenCV_LIBRARIES} util calibration)

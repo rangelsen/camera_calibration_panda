@@ -24,7 +24,9 @@ public:
 		std::vector<cv::Vec3d> rot, std::vector<cv::Vec3d> trans);
 
 	static std::vector<cv::Mat> computeEndeffToCharuco(
-		std::vector<cv::Mat>* bTe, std::vector<cv::Mat>* cTch, cv::Mat bTc);
+		std::vector<cv::Mat>* bTe, std::vector<int>* bTe_indices,
+		std::vector<cv::Mat>* cTch, std::vector<int>* cTch_indices,
+		cv::Mat bTc);
 
 private:
 	

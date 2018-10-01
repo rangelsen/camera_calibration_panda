@@ -89,6 +89,7 @@ void calibrate(Calibration* calib, CameraSensor* camera, cv::Mat endeff_pose,
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
+// TODO: Setup subscription to franka end-effector pose
     srand(time(NULL));
 
     ros::init(argc, argv, "main");
@@ -103,7 +104,6 @@ int main(int argc, char** argv) {
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
 
 	Calibration calib(dict);
-
 	CameraSensor camera;
 
     uint32_t i = 0;

@@ -1,7 +1,0 @@
-include_rules
-: foreach camerasensor.cpp calibration.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<calib>
-: foreach main.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<main>
-: gen-charuco-board.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<gen-charuco>
-: pose-collection.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<pose-collection>
-: estimate-camera-pose.cpp |> !cc |> $(BUILD_DIR)%B.o $(ROOT_DIR)/<pose-estimation>
-: ver.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<verification>

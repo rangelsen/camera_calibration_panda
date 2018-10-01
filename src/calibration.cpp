@@ -131,15 +131,26 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 
 ////////////////////////////////////////////////////////////////////////////////
 std::vector<cv::Mat> Calibration::computeEndeffToCharuco(
-	std::vector<cv::Mat>* bTe, std::vector<cv::Mat>* cTch, cv::Mat bTc) {
+	std::vector<cv::Mat>* bTe, std::vector<int>* bTe_indices,
+	std::vector<cv::Mat>* cTch, std::vector<int>* cTch_indices, cv::Mat bTc) {
 
 	std::vector<cv::Mat> eTch;
 
-	assert(bTe->size() == cTch->size());
+	for (uint32_t i = 0; i < cTch_indices->size(); i++) {
 
-	for (uint32_t i = 0; i < bTe->size(); i++) {
+		int endeff_idx;
 
-		cv::Mat tf = (*bTe)[i].inv() * bTc * (*cTch)[i];
+		for (uint32_t j = 0; j < bTe_indices->size(); j++) {
+
+			if ((*cTch_indices)[i] == (*bTe_indices)[j] &&
+				(*bTe_indices)[j] >= 0) {
+
+				endeff_idx = j;
+				break;
+			}
+		}
+
+		cv::Mat tf = (*bTe)[endeff_idx].inv() * bTc * (*cTch)[i];
 		eTch.push_back(tf);
 	}
 
