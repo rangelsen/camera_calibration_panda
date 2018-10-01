@@ -1,9 +1,9 @@
-#ifndef CAMERA_SENSOR_HPP
-#define CAMERA_SENSOR_HPP
+#ifndef CAMERASENSOR_HPP
+#define CAMERASENSOR_HPP
 
 #include <librealsense2/rs.hpp>
 #include <librealsense2/rsutil.h>
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <opencv2/opencv.hpp>
 
@@ -105,7 +105,7 @@ private:
     float meter_scale_;
 };
 
-#endif // CAMERA_SENSOR_HPP
+#endif // CAMERASENSOR_HPP
 
 /// @file
 

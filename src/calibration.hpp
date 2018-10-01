@@ -4,7 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/aruco/charuco.hpp>
 
-#include <camerasensor.hpp>
+#include "camerasensor.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Calibration {
@@ -16,12 +16,15 @@ public:
 	 * @brief Estimate the position and orientation of the ChArUco board in the
 	 * camera frame
 	 */
-	cv::Mat EstimateCharucoPosePoints(cv::Mat& image, CameraSensor* camera);
+	cv::Mat estimateCharucoPosePoints(cv::Mat& image, CameraSensor* camera);
 
-	cv::Mat EstimateCharucoPose(cv::Mat& image, CameraSensor* camera);
+	cv::Mat estimateCharucoPose(cv::Mat& image, CameraSensor* camera);
 
-	static cv::Mat EstimateBoardCorner(std::vector<int> ids,
+	static cv::Mat estimateBoardCorner(std::vector<int> ids,
 		std::vector<cv::Vec3d> rot, std::vector<cv::Vec3d> trans);
+
+	std::vector<cv::Mat> computeEndeffToCharuco(std::vector<cv::Mat>* eTb,
+		std::vector<cv::Mat>* cTch, cv::Mat bTc);
 
 private:
 	

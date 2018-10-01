@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 #include "util.hpp"
 
@@ -67,7 +68,7 @@ bool Util::getUserPosition(double* x, double* y, double* z) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Eigen::Quaterniond Util::UniformRandom() {
+Eigen::Quaterniond Util::UniformRandomQuat() {
 
     double u1 = (double) rand() / RAND_MAX;
     double u2 = (double) rand() / RAND_MAX;
@@ -81,6 +82,35 @@ Eigen::Quaterniond Util::UniformRandom() {
     quat.z() = sqrt(u1) * cosf(M_2_PI * u3);
 
     return quat;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Util::poseToString(cv::Mat pose) {
+	
+	std::string pose_str;
+
+	for (uint8_t i = 0; i < 4; i++) {
+
+		for (uint8_t j = 0; j < 4; j++)  {
+
+			pose_str += std::to_string(pose.at<double>(i, j));
+
+			if (!(i == 3 && j == 3))
+				pose_str += ", ";
+		}
+	}
+
+	return pose_str;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Util::writeToFile(std::string filepath, cv::Mat board_pose, int pose_idx) {
+
+	std::string pose_str = std::to_string(pose_idx) + ", " + poseToString(board_pose);
+	std::ofstream file;
+	file.open(filepath, std::ios::out | std::ios::app);
+	file << pose_str << std::endl;
+	file.close();
 }
 
 /// @file

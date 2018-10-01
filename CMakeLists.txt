@@ -11,13 +11,10 @@ find_package(catkin REQUIRED
   COMPONENTS
     interactive_markers
     moveit_core
-    moveit_visual_tools
     moveit_ros_planning
     moveit_ros_planning_interface
     pluginlib
     geometric_shapes
-    pcl_ros
-    pcl_conversions
     rosbag
     geometry_msgs
 )
@@ -42,13 +39,18 @@ catkin_package(
 include_directories(SYSTEM ${THIS_PACKAGE_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
 
+add_library(realsense2 SHARED IMPORTED)
+set_target_properties(realsense2 PROPERTIES IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/librealsense2.so")
+
 add_library(util STATIC src/util.cpp)
+add_library(calibration STATIC src/calibration.cpp)
+add_library(camera STATIC src/camerasensor.cpp)
 
 #Add all executables
 add_executable(main src/main.cpp)
 add_executable(robot src/robot_commander.cpp)
 add_executable(manual_pose_pub src/manual_pose_pub.cpp)
 
-target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)
+target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util calibration camera realsense2)
 target_link_libraries(robot ${catkin_LIBRARIES})
-target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} util)
+target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)

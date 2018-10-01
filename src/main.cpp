@@ -10,6 +10,7 @@
 
 #include "panda_status.h"
 #include "util.hpp"
+#include "calibration.hpp"
 
 #define DEBUG true
 
@@ -31,7 +32,7 @@ geometry_msgs::Pose generateNextTarget(cv::Mat current_pose) {
         target.position.y = y;
         target.position.z = z;
 
-        Eigen::Quaterniond q_target = Util::UniformRandom();
+        Eigen::Quaterniond q_target = Util::UniformRandomQuat();
         target.orientation.x = q_target.x();
         target.orientation.y = q_target.y();
         target.orientation.z = q_target.z();
@@ -54,7 +55,7 @@ void updatePandaStatus(std_msgs::Int16 status) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void calibrate() {
+void calibrate(Calibration* calib) {
 
     ROS_INFO("Working");
 
@@ -64,7 +65,7 @@ void calibrate() {
 #else
 
     cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
-    cv::Mat board_pose = calib.EstimateCharucoPose(image_copy, &camera);
+    cv::Mat board_pose = calib->EstimateCharucoPose(image_copy, &camera);
 
     if (!board_pose.empty()) {
 
@@ -89,6 +90,11 @@ int main(int argc, char** argv) {
     ros::Subscriber panda_status_sub = nh.subscribe("panda_status", 100, updatePandaStatus);
     ros::Publisher pose_pub = nh.advertise<geometry_msgs::Pose>("pose", 100);
 
+	cv::Ptr<cv::aruco::Dictionary> dict = 
+		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+
+	Calibration calib(dict);
+
     uint32_t i = 0;
     bool is_first = true;
 
@@ -99,7 +105,7 @@ int main(int argc, char** argv) {
             if (is_first)
                 is_first = false;
             else
-                calibrate();
+                calibrate(&calib);
 
             geometry_msgs::Pose next_target = generateNextTarget(endeff_pose_);
             pose_pub.publish(next_target);

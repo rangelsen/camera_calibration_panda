@@ -1,5 +1,5 @@
 #include <iostream>
-#include <calibration.hpp>
+#include "calibration.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 #define BOARD_SQUARE_LEN 0.034f
@@ -15,7 +15,7 @@ Calibration::Calibration(cv::Ptr<cv::aruco::Dictionary> dict) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-cv::Mat Calibration::EstimateCharucoPosePoints(cv::Mat& image, CameraSensor* camera) {
+cv::Mat Calibration::estimateCharucoPosePoints(cv::Mat& image, CameraSensor* camera) {
 
 	std::vector<int> charuco_ids;
 	std::vector<std::vector<cv::Point2f>> corners;
@@ -70,7 +70,7 @@ cv::Mat Calibration::EstimateCharucoPosePoints(cv::Mat& image, CameraSensor* cam
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-cv::Mat Calibration::EstimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
+cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 
 	std::vector<int> charuco_ids, all_ids;
 	std::vector<std::vector<cv::Point2f>> corners;
@@ -127,6 +127,23 @@ cv::Mat Calibration::EstimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 	cv::waitKey(0);
 
 	return board_pose;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector<cv::Mat> Calibration::computeEndeffToCharuco(
+	std::vector<cv::Mat>* bTe, std::vector<cv::Mat>* cTch, cv::Mat bTc) {
+
+	std::vector<cv::Mat> eTch;
+
+	assert(bTe->size() == cTch->size());
+
+	for (uint32_t i = 0; i < bTe->size(); i++) {
+
+		cv::Mat tf = (*bTe)[i].inv() * bTc * (*cTch)[i];
+		eTch.push_back(tf);
+	}
+
+	return eTch;
 }
 
 /// @file
