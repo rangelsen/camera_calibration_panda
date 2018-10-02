@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
 
     while (ros::ok()) {
 
-        bool valid_pos = Util::getUserPosition(&x, &y, &z);
+        bool should_quit = false;
+        bool valid_pos = Util::getUserPosition(&x, &y, &z, &should_quit);
 
         if (valid_pos) {
 

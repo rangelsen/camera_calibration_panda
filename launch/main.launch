@@ -24,6 +24,6 @@
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
   </include>
 
+  <node name="calib" type="calib" pkg="camera_calibration_panda" output="screen" />
   <node name="robot" type="robot" pkg="camera_calibration_panda" output="screen" />
-  <node name="main" type="main" pkg="camera_calibration_panda" output="screen" />
 </launch>
