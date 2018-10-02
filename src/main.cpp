@@ -11,7 +11,7 @@
 #include "panda_status.h"
 #include "util.hpp"
 #include "camerasensor.hpp"
-// #include "calibration.hpp"
+#include "calibration.hpp"
 
 #define DEBUG 0
 
@@ -72,21 +72,18 @@ void calibrate() {
     sleep(5);
 #else
 
-    /*
 	static cv::Ptr<cv::aruco::Dictionary> dict = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
 
 	static Calibration calib(dict);
-    */
 
 	static CameraSensor camera;
 
-    /*
     static uint32_t i = 0;
 
 	cv::Mat image_copy, image;
     cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
-    cv::Mat board_pose = calib.estimateCharucoPose(image_copy, camera);
+    cv::Mat board_pose = calib.estimateCharucoPose(image_copy, &camera);
 
     if (!board_pose.empty()) {
 
@@ -95,9 +92,8 @@ void calibrate() {
         Util::writeToFile("res/board-poses.csv", board_pose, i);
         Util::writeToFile("res/endeffector_poses.csv", endeff_pose_, i);
 
-        (*i)++;
+        i++;
     }
-    */
 #endif
 }
 
