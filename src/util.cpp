@@ -25,7 +25,7 @@ bool Util::validXYZ(double x, double y, double z) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Util::getUserPosition(double* x, double* y, double* z) {
+bool Util::getUserPosition(double* x, double* y, double* z, bool *exit) {
 
     std::cout << "Input: " << std::endl;
 
@@ -63,6 +63,12 @@ bool Util::getUserPosition(double* x, double* y, double* z) {
             std::cout << "Setpoint out of bounds" << std::endl;
             return false;
         }
+
+        return true;
+    }
+    else if (command == "exit") {
+
+        *exit = true;
 
         return true;
     }
