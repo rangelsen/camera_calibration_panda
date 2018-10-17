@@ -8,33 +8,65 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path_prefix =
-		"/home/mrgribbot/Documents/camera-calibration/res/";
+		"/home/mrgribbot/Documents/calib-dataset1/";
+	
+	std::string local_work_dir =
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/";
 
-	std::cout << "Running calibration verification at:"
-		<< resource_path_prefix << std::endl;
+	std::string local_res = local_work_dir + "res/";
+
+	{ // Index poses that are visible
+
+		// Remove old poses
+		std::string rm_cTch = "rm " + local_res + "cTch_ver.csv";
+		std::string rm_eTch = "rm " + local_res + "eTch.csv";
+
+		system(rm_cTch.c_str());
+		system(rm_eTch.c_str());
+
+		CameraSensor camera;
+
+		cv::Ptr<cv::aruco::Dictionary> dictionary = 
+			cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+
+		Calibration calib(dictionary);
+
+		for (uint32_t i = 0; i <= 15; i++) {
+
+			std::string img_file = "ir" + std::to_string(i) + ".png";
+			cv::Mat img = cv::imread(resource_path_prefix + "calib_images/" +
+				img_file, cv::IMREAD_GRAYSCALE);
+
+			cv::Mat img_copy;
+			cv::cvtColor(img, img_copy, cv::COLOR_GRAY2RGB);
+			cv::Mat board_pose = calib.estimateCharucoPose(img_copy, &camera);
+
+			if (!board_pose.empty())
+				Util::writeToFile(local_res + "cTch_ver.csv", board_pose, i);
+		}
+	}
 
 	std::vector<int> bTe_indices;
-	std::vector<cv::Mat> bTe  = Util::readPosesFromFile(resource_path_prefix +
-		"endeffector_poses.csv", &bTe_indices);
+	std::vector<cv::Mat> bTe  = Util::readPosesFromFile(
+		resource_path_prefix + "bTe.csv", &bTe_indices);
 
 	std::vector<int> cTch_indices;
-	std::vector<cv::Mat> cTch = Util::readPosesFromFile(resource_path_prefix +
-		"board_poses_corrected.csv", &cTch_indices);
+	std::vector<cv::Mat> cTch = Util::readPosesFromFile(local_res +
+		"cTch_ver.csv", &cTch_indices);
 
-	std::vector<cv::Mat> bTc = Util::readPosesFromFile(resource_path_prefix +
-		"camera_poses.csv", NULL);
+	std::string compute_camera_pose_cmd = "octave " + local_work_dir +
+		"src/estimate_camera_pose.m";
+
+	system(compute_camera_pose_cmd.c_str());
+
+	std::vector<cv::Mat> bTc = Util::readPosesFromFile(local_res + 
+		"bTc.csv", NULL);
 
 	std::vector<cv::Mat> eTch = Calibration::computeEndeffToCharuco(&bTe,
 		&bTe_indices, &cTch, &cTch_indices, bTc[0]);
 
-	std::cout << "Verifying camera pose: " << std::endl;
-	Util::printCvMat(bTc[0]);
-
-	for (uint32_t j = 0; j < eTch.size(); j++) {
-		
-		Util::printCvMat(eTch[j]);
-		Util::writeToFile("eTch.csv", eTch[j], j);
-	}
+	for (uint32_t j = 0; j < eTch.size(); j++)
+		Util::writeToFile(local_res + "eTch.csv", eTch[j], j);
 
 	return 0;
 }

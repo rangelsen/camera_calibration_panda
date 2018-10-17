@@ -1,7 +1,9 @@
 function estimate_camera_pose()
 
-	board_poses 	  = csvread("../res/board_poses_corrected.csv");
-	endeffector_poses = csvread("../res/endeffector_poses.csv");
+	res_path_prefix = "/home/mrgribbot/Documents/calib-dataset1/";
+	local_res = "../res/";
+	board_poses 	  = csvread(strcat(local_res, "cTch_ver.csv"));
+	endeffector_poses = csvread(strcat(res_path_prefix, "bTe.csv"));
 
 	n_calib_points = size(board_poses, 1)
 
@@ -22,33 +24,17 @@ function estimate_camera_pose()
 		B1 = get_pose_by_index(point_idx1, endeffector_poses);
 		B = B1 * inv(B0);
 		BB(:, start_col:(start_col + 3)) = B;
-
-		%{
-		A0 = pose_from_line(board_poses(i, 2:end));
-		A1 = pose_from_line(board_poses(i + 1, 2:end));
-		A = A1 * inv(A0);
-		% A = inv(A0) * A1;
-
-		start_col = (i - 1) * 4 + 1;
-		AA(:, start_col:(start_col + 3)) = A;
-
-		B0 = pose_from_line(endeffector_poses(i, 2:end));
-		B1 = pose_from_line(endeffector_poses(i + 1, 2:end));
-		B = B1 * inv(B0);
-		% B = inv(B0) * B1;
-		BB(:, start_col:(start_col + 3)) = B;
-		%}
 	end
 
 	% cTb = andreff(AA, BB);
-	% cTb = park(AA, BB);
-	cTb = daniilidis(AA, BB);
+	cTb = park(AA, BB);
+	% cTb = daniilidis(AA, BB);
 
 	bTc= inv(cTb)
 
 	flat_pose = flatten_pose(bTc);
 
-	csvwrite("../res/camera_poses.csv", flat_pose);
+	csvwrite(strcat(local_res, "bTc.csv"), flat_pose);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
