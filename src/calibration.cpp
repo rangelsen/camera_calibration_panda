@@ -75,10 +75,8 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 	std::vector<int> charuco_ids, all_ids;
 	std::vector<std::vector<cv::Point2f>> corners;
 	std::vector<cv::Point2f> all_corners;
-	/*
 	cv::imshow("ir", image);
 	cv::waitKey(0);
-	*/
 	cv::aruco::detectMarkers(image, dict_, corners, charuco_ids);
 
 	float detection_ratio = (float) corners.size() / BOARD_N_MARKERS;
@@ -123,10 +121,8 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 
 	board_pose.at<double>(3, 3) = 1.0;
 
-	/*
 	cv::imshow("Detected markers", image);
 	cv::waitKey(0);
-	*/
 
 	return board_pose;
 }
@@ -153,7 +149,6 @@ std::vector<cv::Mat> Calibration::computeEndeffToCharuco(
 		}
 
 		cv::Mat tf = (*bTe)[endeff_idx].inv() * bTc * (*cTch)[i];
-		// cv::Mat tf = (*cTch)[i].inv() * bTc.inv() * (*bTe)[endeff_idx];
 		eTch.push_back(tf);
 	}
 

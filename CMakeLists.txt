@@ -45,7 +45,6 @@ add_library(util STATIC src/util.cpp)
 add_library(calibration STATIC src/calibration.cpp)
 add_library(camera STATIC src/camerasensor.cpp)
 
-#Add all executables
 add_executable(calib src/main.cpp)
 add_executable(robot src/robot_commander.cpp)
 add_executable(manual_pose_pub src/manual_pose_pub.cpp)

@@ -53,10 +53,8 @@ int main(int argc, char** argv) {
 
 				for (uint8_t j = 0; j < 4; j++) {
 
-					for (uint8_t k = 0; k < 4; k++) {
-
+					for (uint8_t k = 0; k < 4; k++)
 						endeff_pose.at<double>(j, k) = pose[j * 4 + k];
-					}
 				}
 
 				Util::writeToFile(resource_path + "bTe.csv", endeff_pose, i);
@@ -65,7 +63,9 @@ int main(int argc, char** argv) {
 
 			i++;
 		}
-
+		
+		std::cout << "Press any key to continue" << std::endl;
+		std::cin.ignore();
 	}
 }
 
