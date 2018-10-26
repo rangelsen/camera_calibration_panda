@@ -22,12 +22,12 @@ int main(int argc, char** argv) {
 	std::string mkdir_cmd = "mkrid " + resource_path;
 	system(mkdir_cmd.c_str());
 
-	CameraSensor camera;
-
 	cv::Ptr<cv::aruco::Dictionary> dictionary = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
 
 	Calibration calib(dictionary);
+
+	CameraSensor::Initialize();
 
 	uint32_t i = 0;
 
@@ -35,33 +35,34 @@ int main(int argc, char** argv) {
 
 	while (true) {
 
-		cv::Mat image_copy, image;
-		cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
-		cv::Mat board_pose = calib.estimateCharucoPose(image_copy, &camera);
+		for (CameraSensor& camera : CameraSensor::connected_devices) {
 
-		if (!board_pose.empty()) {
+			cv::Mat image_copy, image;
+			cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
+			cv::Mat board_pose = calib.estimateCharucoPose(image_copy, &camera);
 
-			cv::imwrite(resource_path + "calib-images/ir" + std::to_string(i) + ".png", image);
+			if (!board_pose.empty()) {
 
-			Util::writeToFile(resource_path + "cTch.csv", board_pose, i);
+				cv::imwrite(resource_path + "calib-images/" + camera.SerialNumber() + "/ir" + std::to_string(i) + ".png", image);
+				Util::writeToFile(resource_path + "cTch.csv", board_pose, i);
 
-			robot.read([resource_path, i](const franka::RobotState& robot_state) {
+				robot.read([resource_path, i](const franka::RobotState& robot_state) {
 
-				std::array<double, 16> pose = robot_state.O_T_EE;
+					std::array<double, 16> pose = robot_state.O_T_EE;
+					cv::Mat endeff_pose(cv::Size(4, 4), CV_64FC1);
 
-				cv::Mat endeff_pose(cv::Size(4, 4), CV_64FC1);
+					for (uint8_t j = 0; j < 4; j++) {
 
-				for (uint8_t j = 0; j < 4; j++) {
+						for (uint8_t k = 0; k < 4; k++)
+							endeff_pose.at<double>(j, k) = pose[j * 4 + k];
+					}
 
-					for (uint8_t k = 0; k < 4; k++)
-						endeff_pose.at<double>(j, k) = pose[j * 4 + k];
-				}
+					Util::writeToFile(resource_path + "bTe.csv", endeff_pose, i);
+					return 0;
+				});
 
-				Util::writeToFile(resource_path + "bTe.csv", endeff_pose, i);
-				return 0;
-			});
-
-			i++;
+				i++;
+			}
 		}
 		
 		std::cout << "Press any key to continue" << std::endl;

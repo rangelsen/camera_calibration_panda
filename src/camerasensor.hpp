@@ -12,7 +12,11 @@ class CameraSensor {
 public:
     CameraSensor();
     
+	CameraSensor(rs2::device device);
+
     ~CameraSensor();
+
+	static void Initialize();
 
     void AcquireColorImage(cv::Mat* image);
 
@@ -44,15 +48,13 @@ public:
     const Eigen::Vector3f TransformToCameraFrame(
         const Eigen::Vector3f& world_point) const;
 
-    rs2::device GetDevice(const std::string dev_name);
+    rs2::device GetDeviceByName(const std::string dev_name);
 
     std::string GetDeviceName(const rs2::device& dev);
 
     void CaptureDepth(cv::Mat* image);
 
     void CaptureIr(cv::Mat* image);
-
-//    pcl::PointCloud<pcl::PointXYZ>::Ptr CapturePointCloud();
 
     void RotateX(float angle);
 
@@ -64,7 +66,13 @@ public:
 
 	cv::Mat DistCoeffs(std::string stream);
 
-    // void Close();
+	static std::string GetSerialNumber(const rs2::device& dev);
+
+	rs2::device Device();
+
+	static std::vector<CameraSensor> connected_devices;
+
+	std::string SerialNumber();
 
 private:
     void ActivateStream(const std::string stream, rs2::config* config);
@@ -87,6 +95,8 @@ private:
 	cv::Mat GetIntrinsics(std::string stream_type);
 
 	cv::Mat GetDistortionCoeffs(std::string stream_name);
+
+	void SetupStreams();
 
     uint32_t res_x_, res_y_;
     Eigen::Matrix4f extrinsics_;

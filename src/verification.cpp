@@ -41,8 +41,10 @@ int main(int argc, char** argv) {
 			cv::cvtColor(img, img_copy, cv::COLOR_GRAY2RGB);
 			cv::Mat board_pose = calib.estimateCharucoPose(img_copy, &camera);
 
-			if (!board_pose.empty())
+			if (!board_pose.empty()) {
+
 				Util::writeToFile(local_res + "cTch_ver.csv", board_pose, i);
+			}
 		}
 	}
 
@@ -67,6 +69,9 @@ int main(int argc, char** argv) {
 
 	for (uint32_t j = 0; j < eTch.size(); j++)
 		Util::writeToFile(local_res + "eTch.csv", eTch[j], j);
+
+	std::string variance_cmd = "python3 " + local_work_dir + "src/avg_quat.py";
+	system(variance_cmd.c_str());
 
 	return 0;
 }

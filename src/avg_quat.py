@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
 	for i in range(0, N):
 		q = pq.Quaternion(quaternions[i])
-		squared_diff_sum += math.pow(2 * pq.Quaternion.distance(pq_avg_q, q), 2)
+		squared_diff_sum += math.pow(pq.Quaternion.distance(pq_avg_q, q), 2)
 	
 	quat_variance = squared_diff_sum / N
 

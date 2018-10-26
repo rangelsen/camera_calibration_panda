@@ -1,50 +1,33 @@
 #include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 
 #include "camerasensor.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-static pcl::PointCloud<pcl::PointXYZ>::Ptr points_to_pcl(
-    const rs2::points& points) {
-
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-
-    auto sp = points.get_profile().as<rs2::video_stream_profile>();
-    cloud->width = sp.width();
-    cloud->height = sp.height();
-    cloud->is_dense = false;
-    cloud->points.resize(points.size());
-    auto ptr = points.get_vertices();
-    for (auto& p : cloud->points)
-    {
-        p.x = ptr->x;
-        p.y = ptr->y;
-        p.z = ptr->z;
-        ptr++;
-    }
-
-    return cloud;
-}
-*/
+std::vector<CameraSensor> CameraSensor::connected_devices = std::vector<CameraSensor>();
 
 ////////////////////////////////////////////////////////////////////////////////
 CameraSensor::CameraSensor() {
 
-    res_x_ = 0; res_y_ = 0;
-
     SetExtrinsics(Eigen::Matrix4f::Identity());
 
-    // Turn camera 180 degrees facing along the negative z axis
-    // and move to (0.5, 0.5, 1.0) m
-    extrinsics_(1, 1) = -1.0f;
-    extrinsics_(2, 2) = -1.0f;
-    extrinsics_(0, 3) = 0.5f;
-    extrinsics_(1, 3) = 0.5f;
-    extrinsics_(2, 3) = 1.5f;
+	if (connected_devices.size() == 0)
+		Initialize();
 
-    rs2::device dev = GetDevice("Intel");
+    rs2::device dev = connected_devices[0].Device();
+	
+	SetupStreams();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+CameraSensor::CameraSensor(rs2::device device) {
+
+	device_ = device;
+
+	SetupStreams();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void CameraSensor::SetupStreams() {
 
     pipeline_ = rs2::pipeline();
     ActivateStream("ir_stream", &config_);
@@ -72,6 +55,31 @@ CameraSensor::CameraSensor() {
 CameraSensor::~CameraSensor() { }
 
 ////////////////////////////////////////////////////////////////////////////////
+void CameraSensor::Initialize() {
+
+    rs2::context ctx;
+    rs2::device_list devices = ctx.query_devices();
+    rs2::device selected_device;
+
+    if (devices.size() == 0) {
+
+        std::cerr << "No device connected" << std::endl;
+
+        rs2::device_hub device_hub(ctx);
+        selected_device = device_hub.wait_for_device();
+    }
+    else {
+
+        for (rs2::device device : devices) {
+
+			CameraSensor camera(device);
+			connected_devices.push_back(camera);
+			std::cout << "Device: " << GetSerialNumber(camera.Device());
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 rs2::frameset CameraSensor::Capture() {
 
     rs2::frameset frames = pipeline_.wait_for_frames(); 
@@ -81,7 +89,7 @@ rs2::frameset CameraSensor::Capture() {
 ////////////////////////////////////////////////////////////////////////////////
 void CameraSensor::CaptureDepth(cv::Mat* image) {
 
-    Warmup(&pipeline_, 10);
+    // Warmup(&pipeline_, 10);
     rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
 
     *image = cv::Mat(cv::Size(frame.get_width(), frame.get_height()),
@@ -91,25 +99,12 @@ void CameraSensor::CaptureDepth(cv::Mat* image) {
 ////////////////////////////////////////////////////////////////////////////////
 void CameraSensor::CaptureIr(cv::Mat* image) {
 
-    Warmup(&pipeline_, 10);
+    // Warmup(&pipeline_, 10);
     rs2::video_frame vframe = Capture().first(RS2_STREAM_INFRARED).as<rs2::video_frame>();
 
     *image = cv::Mat(cv::Size(vframe.get_width(), vframe.get_height()),
                      CV_8UC1, (void*) vframe.get_data());
 }
-
-////////////////////////////////////////////////////////////////////////////////
-/*
-pcl::PointCloud<pcl::PointXYZ>::Ptr CameraSensor::CapturePointCloud() {
-
-    rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
-
-    rs2::pointcloud pcloud;
-    rs2::points points = pcloud.calculate(frame);
-
-    return points_to_pcl(points);
-}
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 const Eigen::Matrix4f CameraSensor::Extrinsics() const {
@@ -206,7 +201,7 @@ void CameraSensor::ActivateStream(const std::string stream, rs2::config* config)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-rs2::device CameraSensor::GetDevice(const std::string dev_name) {
+rs2::device CameraSensor::GetDeviceByName(const std::string dev_name) {
 
     rs2::context ctx;
     rs2::device_list devices = ctx.query_devices();
@@ -220,6 +215,7 @@ rs2::device CameraSensor::GetDevice(const std::string dev_name) {
         selected_device = device_hub.wait_for_device();
     }
     else {
+
         for (rs2::device device : devices) {
 
             std::string curr_dev_name = GetDeviceName(device);
@@ -243,11 +239,20 @@ std::string CameraSensor::GetDeviceName(const rs2::device& dev) {
     if (dev.supports(RS2_CAMERA_INFO_NAME))
         name = dev.get_info(RS2_CAMERA_INFO_NAME);
 
-    std::string sn = "########";
-    if (dev.supports(RS2_CAMERA_INFO_SERIAL_NUMBER))
-        sn = std::string("#") + dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
+    std::string sn = GetSerialNumber(dev);
 
     return name + " " + sn;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string CameraSensor::GetSerialNumber(const rs2::device& dev) {
+
+	std::string serial;
+
+	if (dev.supports(RS2_CAMERA_INFO_SERIAL_NUMBER))
+		serial = dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
+
+	return serial;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -395,6 +400,18 @@ cv::Mat CameraSensor::Intrinsics(std::string stream) {
 cv::Mat CameraSensor::DistCoeffs(std::string stream) {
 
 	return dist_coeffs_[StringToStreamType(stream)];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+rs2::device CameraSensor::Device() {
+
+	return device_;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string CameraSensor::SerialNumber() {
+
+	return GetSerialNumber(device_);
 }
 
 /// @file
