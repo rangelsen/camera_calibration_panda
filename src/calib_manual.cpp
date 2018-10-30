@@ -19,8 +19,10 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path = "/home/mrgribbot/calib-dataset2/";
-	std::string mkdir_cmd = "mkrid " + resource_path;
+	/*
+	std::string mkdir_cmd = "mkdir " + resource_path;
 	system(mkdir_cmd.c_str());
+	*/
 
 	cv::Ptr<cv::aruco::Dictionary> dictionary = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
@@ -28,16 +30,23 @@ int main(int argc, char** argv) {
 	Calibration calib(dictionary);
 
 	CameraSensor::Initialize();
+	// CameraSensor camera;
 
 	uint32_t i = 0;
 
-	franka::Robot robot(ROBOT_IP);
+	// franka::Robot robot(ROBOT_IP);
 
 	while (true) {
 
-		for (CameraSensor& camera : CameraSensor::connected_devices) {
+		for (CameraSensor* camera : CameraSensor::connected_devices) {
 
 			cv::Mat image_copy, image;
+			camera->CaptureIr(&image);
+
+			cv::imshow("Image", image);
+			cv::waitKey(0);
+
+			/*
 			cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
 			cv::Mat board_pose = calib.estimateCharucoPose(image_copy, &camera);
 
@@ -63,10 +72,13 @@ int main(int argc, char** argv) {
 
 				i++;
 			}
+		*/
 		}
-		
+
+		/*
 		std::cout << "Press any key to continue" << std::endl;
 		std::cin.ignore();
+		*/
 	}
 }
 

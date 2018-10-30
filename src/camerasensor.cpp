@@ -3,7 +3,8 @@
 #include "camerasensor.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector<CameraSensor> CameraSensor::connected_devices = std::vector<CameraSensor>();
+std::vector<CameraSensor*> CameraSensor::connected_devices = std::vector<CameraSensor*>();
+rs2::context CameraSensor::ctx_;
 
 ////////////////////////////////////////////////////////////////////////////////
 CameraSensor::CameraSensor() {
@@ -12,8 +13,10 @@ CameraSensor::CameraSensor() {
 
 	if (connected_devices.size() == 0)
 		Initialize();
+	else
+		std::cout << connected_devices.size() << " devices connected" << std::endl;
 
-    rs2::device dev = connected_devices[0].Device();
+   	device_ = connected_devices[0]->Device();
 	
 	SetupStreams();
 }
@@ -29,25 +32,27 @@ CameraSensor::CameraSensor(rs2::device device) {
 ////////////////////////////////////////////////////////////////////////////////
 void CameraSensor::SetupStreams() {
 
-    pipeline_ = rs2::pipeline();
-    ActivateStream("ir_stream", &config_);
-
+	config_.enable_device(device_.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+	config_.enable_stream(RS2_STREAM_INFRARED);
     pipeline_profile_ = pipeline_.start(config_);
+
     Warmup(&pipeline_, 50);
 
-    if (StreamIsActive(RS2_STREAM_DEPTH, &pipeline_profile_)) {
-        
-		intrinsics_[RS2_STREAM_DEPTH] = GetIntrinsics("depth");
-		dist_coeffs_[RS2_STREAM_DEPTH] = GetDistortionCoeffs("depth");
+	{
+		if (StreamIsActive(RS2_STREAM_DEPTH, &pipeline_profile_)) {
+			
+			intrinsics_[RS2_STREAM_DEPTH] = GetIntrinsics("depth");
+			dist_coeffs_[RS2_STREAM_DEPTH] = GetDistortionCoeffs("depth");
 
-        auto sensor = pipeline_profile_.get_device().first<rs2::depth_sensor>();
-        meter_scale_ = sensor.get_depth_scale();
-    }
+			auto sensor = device_.first<rs2::depth_sensor>();
+			meter_scale_ = sensor.get_depth_scale();
+		}
 
-	if (StreamIsActive(RS2_STREAM_INFRARED, &pipeline_profile_)) {
+		if (StreamIsActive(RS2_STREAM_INFRARED, &pipeline_profile_)) {
 
-		intrinsics_[RS2_STREAM_INFRARED] = GetIntrinsics("ir");
-		dist_coeffs_[RS2_STREAM_INFRARED] = GetDistortionCoeffs("ir");
+			intrinsics_[RS2_STREAM_INFRARED] = GetIntrinsics("ir");
+			dist_coeffs_[RS2_STREAM_INFRARED] = GetDistortionCoeffs("ir");
+		}
 	}
 }
 
@@ -57,24 +62,27 @@ CameraSensor::~CameraSensor() { }
 ////////////////////////////////////////////////////////////////////////////////
 void CameraSensor::Initialize() {
 
-    rs2::context ctx;
-    rs2::device_list devices = ctx.query_devices();
+    ctx_ = rs2::context();
+
+    rs2::device_list devices = ctx_.query_devices();
     rs2::device selected_device;
 
     if (devices.size() == 0) {
 
-        std::cerr << "No device connected" << std::endl;
+        std::cerr << "No devices connected" << std::endl;
 
-        rs2::device_hub device_hub(ctx);
+        rs2::device_hub device_hub(ctx_);
         selected_device = device_hub.wait_for_device();
     }
     else {
 
         for (rs2::device device : devices) {
 
-			CameraSensor camera(device);
+			std::cout << "Constructing camera object from device: "
+					  << GetSerialNumber(device) << std::endl;
+
+			CameraSensor* camera = new CameraSensor(device);
 			connected_devices.push_back(camera);
-			std::cout << "Device: " << GetSerialNumber(camera.Device());
         }
     }
 }
@@ -187,16 +195,9 @@ const Eigen::Vector3f CameraSensor::TransformToCameraFrame(
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void CameraSensor::ActivateStream(const std::string stream, rs2::config* config) {
+void CameraSensor::ActivateStream(rs2_stream stream, rs2::config* config) {
 
-    rs2_stream stream_type;
-
-    if (stream == "depth_stream")
-        stream_type = RS2_STREAM_DEPTH;
-    else if (stream == "ir_stream")
-        stream_type = RS2_STREAM_INFRARED;
-
-    config->enable_stream(stream_type);
+    config->enable_stream(stream);
     std::cout << "Activated stream: " << stream << std::endl;
 }
 

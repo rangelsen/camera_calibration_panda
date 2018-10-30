@@ -6,6 +6,7 @@
 #include <Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <opencv2/opencv.hpp>
+#include <mutex>
 
 class CameraSensor {
 
@@ -70,12 +71,12 @@ public:
 
 	rs2::device Device();
 
-	static std::vector<CameraSensor> connected_devices;
+	static std::vector<CameraSensor*> connected_devices;
 
 	std::string SerialNumber();
 
 private:
-    void ActivateStream(const std::string stream, rs2::config* config);
+    void ActivateStream(rs2_stream stream, rs2::config* config);
 
     void GetStreamProfile(rs2::device* device, rs2::sensor& sensor_out,
                           rs2::stream_profile& stream_profile_out,
@@ -111,8 +112,11 @@ private:
 	std::vector<rs2_stream> active_streams_;
 	std::map<rs2_stream, cv::Mat> intrinsics_;
 	std::map<rs2_stream, cv::Mat> dist_coeffs_;
+	std::mutex mutex_;
 
     float meter_scale_;
+
+	static rs2::context ctx_;
 };
 
 #endif // CAMERASENSOR_HPP
