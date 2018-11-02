@@ -19,8 +19,6 @@ cv::Mat Calibration::estimateCharucoPosePoints(cv::Mat& image, CameraSensor* cam
 
 	std::vector<int> charuco_ids;
 	std::vector<std::vector<cv::Point2f>> corners;
-	cv::imshow("ir", image);
-	cv::waitKey(0);
 	cv::aruco::detectMarkers(image, dict_, corners, charuco_ids);
 
 	float detection_ratio = (float) corners.size() / BOARD_N_MARKERS;
@@ -61,9 +59,6 @@ cv::Mat Calibration::estimateCharucoPosePoints(cv::Mat& image, CameraSensor* cam
 
 		for (uint8_t i = 0; i < 3; i++)
 			board_pose.at<double>(i, 3) = board_trans[i];
-
-		cv::imshow("Detected markers", image);
-		cv::waitKey(0);
 	}
 
 	return board_pose;
@@ -75,8 +70,6 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 	std::vector<int> charuco_ids, all_ids;
 	std::vector<std::vector<cv::Point2f>> corners;
 	std::vector<cv::Point2f> all_corners;
-	cv::imshow("ir", image);
-	cv::waitKey(0);
 	cv::aruco::detectMarkers(image, dict_, corners, charuco_ids);
 
 	float detection_ratio = (float) corners.size() / BOARD_N_MARKERS;
@@ -120,9 +113,6 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 		board_pose.at<double>(i, 3) = trans[i];
 
 	board_pose.at<double>(3, 3) = 1.0;
-
-	cv::imshow("Detected markers", image);
-	cv::waitKey(0);
 
 	return board_pose;
 }

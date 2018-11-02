@@ -6,7 +6,10 @@
 #include <Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <opencv2/opencv.hpp>
-#include <mutex>
+/*
+#include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
+*/
 
 class CameraSensor {
 
@@ -75,6 +78,13 @@ public:
 
 	std::string SerialNumber();
 
+	/*
+	static pcl::PointCloud<pcl::PointXYZ>::Ptr PointsToCloud(
+		const rs2::points& points);
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr CapturePointCloud();
+	*/
+
 private:
     void ActivateStream(rs2_stream stream, rs2::config* config);
 
@@ -112,7 +122,6 @@ private:
 	std::vector<rs2_stream> active_streams_;
 	std::map<rs2_stream, cv::Mat> intrinsics_;
 	std::map<rs2_stream, cv::Mat> dist_coeffs_;
-	std::mutex mutex_;
 
     float meter_scale_;
 

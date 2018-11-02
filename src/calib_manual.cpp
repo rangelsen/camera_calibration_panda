@@ -13,72 +13,71 @@
 #include <eigen3/Eigen/Core>
 
 ////////////////////////////////////////////////////////////////////////////////
-#define ROBOT_IP "10.0.0.1"
+#define ROBOT_IP "10.0.0.2"
 
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	std::string resource_path = "/home/mrgribbot/calib-dataset2/";
-	/*
+	std::string resource_path =
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset1/";
+
+	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
+	std::string mkdir_ir_cmd = "mkdir " + resource_path + "calib-images-ir";
+	std::string mkdir_depth_cmd = "mkdir " + resource_path + "calib-images-depth";
+	system(rm_cmd.c_str());
 	system(mkdir_cmd.c_str());
-	*/
+	system(mkdir_ir_cmd.c_str());
+	system(mkdir_depth_cmd.c_str());
 
 	cv::Ptr<cv::aruco::Dictionary> dictionary = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
 
 	Calibration calib(dictionary);
-
 	CameraSensor::Initialize();
-	// CameraSensor camera;
+
+	for (CameraSensor* camera : CameraSensor::connected_devices) {
+
+		std::ofstream file;
+		file.open(resource_path + "depth_scale.cfg", std::ios::app);
+		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale());
+		file.close();
+	}
 
 	uint32_t i = 0;
-
-	// franka::Robot robot(ROBOT_IP);
 
 	while (true) {
 
 		for (CameraSensor* camera : CameraSensor::connected_devices) {
 
-			cv::Mat image_copy, image;
-			camera->CaptureIr(&image);
+			cv::Mat colorized_image, ir_image, depth_image;
+			camera->CaptureIr(&ir_image);
+			camera->CaptureDepth(&depth_image);
 
-			cv::imshow("Image", image);
-			cv::waitKey(0);
-
-			/*
-			cv::cvtColor(image, image_copy, cv::COLOR_GRAY2RGB);
-			cv::Mat board_pose = calib.estimateCharucoPose(image_copy, &camera);
+			cv::cvtColor(ir_image, colorized_image, cv::COLOR_GRAY2RGB);
+			cv::Mat board_pose = calib.estimateCharucoPose(colorized_image, camera);
 
 			if (!board_pose.empty()) {
 
-				cv::imwrite(resource_path + "calib-images/" + camera.SerialNumber() + "/ir" + std::to_string(i) + ".png", image);
+				cv::imwrite(resource_path + "calib-images-ir/cam" + camera->SerialNumber() +
+					"ir" + std::to_string(i) + ".png", ir_image);
+
+				cv::imwrite(resource_path + "calib-images-depth/cam" + camera->SerialNumber() +
+					"depth" + std::to_string(i) + ".png", depth_image);
+
 				Util::writeToFile(resource_path + "cTch.csv", board_pose, i);
 
-				robot.read([resource_path, i](const franka::RobotState& robot_state) {
+				std::string franka_cmd = "./devel/lib/camera_calibration_panda/collect-pose " +
+					resource_path + " " + ROBOT_IP + " " + std::to_string(i);
 
-					std::array<double, 16> pose = robot_state.O_T_EE;
-					cv::Mat endeff_pose(cv::Size(4, 4), CV_64FC1);
-
-					for (uint8_t j = 0; j < 4; j++) {
-
-						for (uint8_t k = 0; k < 4; k++)
-							endeff_pose.at<double>(j, k) = pose[j * 4 + k];
-					}
-
-					Util::writeToFile(resource_path + "bTe.csv", endeff_pose, i);
-					return 0;
-				});
+				system(franka_cmd.c_str());
 
 				i++;
 			}
-		*/
-		}
 
-		/*
-		std::cout << "Press any key to continue" << std::endl;
-		std::cin.ignore();
-		*/
+			cv::imshow("Detection", colorized_image);
+			cv::waitKey(0);
+		}
 	}
 }
 

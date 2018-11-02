@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
 	std::string local_res = local_work_dir + "res/";
 
-	{ // Index poses that are visible
+	{ // Index board poses that are visible from the camera
 
 		// Remove old poses
 		std::string rm_cTch = "rm " + local_res + "cTch_ver.csv";

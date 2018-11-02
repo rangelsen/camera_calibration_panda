@@ -3,8 +3,8 @@
 #include <fstream>
 #include <franka/robot.h>
 #include <franka/model.h>
-#include <eigen3/Eigen/Core>
 #include <stdio.h>
+#include "util.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 void print_pose(std::array<double, 16> pose) {
@@ -22,44 +22,39 @@ void print_pose(std::array<double, 16> pose) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string pose_to_string(std::array<double, 16> pose) {
-	
-	std::string pose_str;
-
-	for (uint8_t i = 0; i < 4; i++) {
-
-		for (uint8_t j = 0; j < 4; j++)
-			pose_str += std::to_string(pose[j * 4 + i]) + ", ";
-	}
-
-	return pose_str;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	if (argc < 3) {
+	if (argc < 4) {
 
 		std::cout << "Not enough input arguments." << std::endl;
-		std::cout << "Usage: collect-pose <storage-path> <robot-ip>" << std::endl;
+		std::cout << "Usage: collect-pose <storage-path> <robot-ip> <pose-index>"
+				  << std::endl;
+
 		exit(-1);
 	}
 
+	for (uint8_t i = 0; i < 4; i++)
+		std::cout << "argv[" << (int) i << "] = " << argv[i] << std::endl;
+
 	std::string storage_path = argv[1];
 	std::string robot_ip = argv[2];
+	uint32_t idx = std::atoi(argv[3]);
 
 	franka::Robot robot(robot_ip);
 
-	robot.read([storage_path](const franka::RobotState& robot_state) {
+	robot.read([storage_path, idx](const franka::RobotState& robot_state) {
 
 		std::array<double, 16> pose = robot_state.O_T_EE;
+		cv::Mat endeff_pose(cv::Size(4, 4), CV_64FC1);
 
-		std::string pose_str = pose_to_string(pose);
+		for (uint8_t j = 0; j < 4; j++) {
 
-		std::ofstream file;
-		file.open(storage_path.c_str(), std::ios::out | std::ios::app);
-		file << pose_str << std::endl;
-		file.close();
+			for (uint8_t k = 0; k < 4; k++)
+				endeff_pose.at<double>(j, k) = pose[j * 4 + k];
+		}
+
+		Util::writeToFile(storage_path + "bTe.csv", endeff_pose, idx);
+
 		return 0;
 	});
 

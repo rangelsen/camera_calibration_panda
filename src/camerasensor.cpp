@@ -34,6 +34,8 @@ void CameraSensor::SetupStreams() {
 
 	config_.enable_device(device_.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
 	config_.enable_stream(RS2_STREAM_INFRARED);
+	config_.enable_stream(RS2_STREAM_DEPTH);
+
     pipeline_profile_ = pipeline_.start(config_);
 
     Warmup(&pipeline_, 50);
@@ -45,7 +47,32 @@ void CameraSensor::SetupStreams() {
 			dist_coeffs_[RS2_STREAM_DEPTH] = GetDistortionCoeffs("depth");
 
 			auto sensor = device_.first<rs2::depth_sensor>();
-			meter_scale_ = sensor.get_depth_scale();
+			// meter_scale_ = sensor.get_option(RS2_CAMERA_OPTION_DEPTH_UNITS);
+			rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
+
+			int w = frame.get_width();
+			int h = frame.get_height();
+			uint16_t* frame_data = (uint16_t*) frame.get_data();
+
+			bool found_nonzero_pixel = false;
+
+			for (int i = 0; i < h; i++) {
+
+				for (int j = 0; j < w; j++) {
+				
+					if (frame_data[i * w + j] != 0) {
+
+						meter_scale_ = frame.get_distance(j, i) / (float) frame_data[i * w + j];
+						found_nonzero_pixel = false;
+						break;
+					}
+				}
+
+				if (found_nonzero_pixel == false)
+					break;
+			}
+
+			std::cout << "meter scale [" + SerialNumber() + "] " << meter_scale_ << std::endl;
 		}
 
 		if (StreamIsActive(RS2_STREAM_INFRARED, &pipeline_profile_)) {
@@ -78,7 +105,7 @@ void CameraSensor::Initialize() {
 
         for (rs2::device device : devices) {
 
-			std::cout << "Constructing camera object from device: "
+			std::cout << "Found device: "
 					  << GetSerialNumber(device) << std::endl;
 
 			CameraSensor* camera = new CameraSensor(device);
@@ -414,6 +441,40 @@ std::string CameraSensor::SerialNumber() {
 
 	return GetSerialNumber(device_);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+pcl::PointCloud<pcl::PointXYZ>::Ptr CameraSensor::PointsToCloud(
+    const rs2::points& points) {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    auto sp = points.get_profile().as<rs2::video_stream_profile>();
+    cloud->width = sp.width();
+    cloud->height = sp.height();
+    cloud->is_dense = false;
+    cloud->points.resize(points.size());
+    auto ptr = points.get_vertices();
+
+    for (auto& p : cloud->points) {
+
+        p.x = ptr->x;
+        p.y = ptr->y;
+        p.z = ptr->z;
+        ptr++;
+    }
+
+    return cloud;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+pcl::PointCloud<pcl::PointXYZ>::Ptr CameraSensor::CapturePointCloud() {
+
+    rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
+    rs2::pointcloud pcloud;
+    rs2::points points = pcloud.calculate(frame);
+    return PointsToCloud(points);
+}
+*/
 
 /// @file
 
