@@ -12,7 +12,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset-ver2/";
 
 	CameraSensor::Initialize();
 
