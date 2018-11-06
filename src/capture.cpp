@@ -12,13 +12,15 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset-ver2/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset-ver3-1/";
+
+	std::string mkdir_cmd = "mkdir " + resource_path;
+	system(mkdir_cmd.c_str());
 
 	CameraSensor::Initialize();
 
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
-		std::string mkdir_cmd = "mkdir " + resource_path;
 		std::string mkdir_ir_cmd = "mkdir " + resource_path +
 			"ver-images-ir-" + camera->SerialNumber();
 		std::string mkdir_depth_cmd = "mkdir " + resource_path +
@@ -28,7 +30,6 @@ int main(int argc, char** argv) {
 		std::string mkdir_rgb_cmd_raw = "mkdir " + resource_path +
 			"ver-images-rgb-raw-" + camera->SerialNumber();
 
-		system(mkdir_cmd.c_str());
 		system(mkdir_ir_cmd.c_str());
 		system(mkdir_depth_cmd.c_str());
 		system(mkdir_rgb_cmd.c_str());
