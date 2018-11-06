@@ -52,6 +52,7 @@ add_executable(calib_manual src/calib_manual.cpp)
 add_executable(verification src/verification.cpp)
 # add_executable(verification_pcloud src/verification_pcloud.cpp)
 add_executable(collect-pose src/pose-collection.cpp)
+add_executable(capture src/capture.cpp)
 
 target_link_libraries(robot ${catkin_LIBRARIES})
 target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)
@@ -61,3 +62,4 @@ target_link_libraries(calib ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util camera 
 target_link_libraries(calib_manual ${catkin_LIBRARIES} ${Franka_LIBRARIES} ${OpenCV_LIBRARIES} util camera calibration)
 target_link_libraries(verification ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util camera calibration)
 target_link_libraries(collect-pose ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Franka_LIBRARIES} util)
+target_link_libraries(capture ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util camera)
