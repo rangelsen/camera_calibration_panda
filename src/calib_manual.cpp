@@ -19,7 +19,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset-test/";
 
 	cv::Ptr<cv::aruco::Dictionary> dictionary = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
@@ -27,6 +27,7 @@ int main(int argc, char** argv) {
 	Calibration calib(dictionary);
 	CameraSensor::Initialize();
 
+	/*
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
 		std::ofstream file;
@@ -52,6 +53,7 @@ int main(int argc, char** argv) {
 		system(mkdir_rgb_cmd.c_str());
 		system(mkdir_rgb_cmd_raw.c_str());
 	}
+	*/
 
 	uint32_t i = 0;
 
@@ -64,10 +66,14 @@ int main(int argc, char** argv) {
 			camera->CaptureDepth(&depth_image);
 			camera->CaptureRgb(&rgb_image);
 
-			cv::cvtColor(rgb_image, colorized_image, cv::COLOR_BGR2RGB);
+			cv::imshow("Capture", ir_image);
+			cv::waitKey(0);
+
+			cv::cvtColor(ir_image, colorized_image, cv::COLOR_GRAY2RGB);
 
 			cv::Mat board_pose = calib.estimateCharucoPose(colorized_image, camera);
 
+			/*
 			if (!board_pose.empty()) {
 
 				cv::imwrite(resource_path + "calib-images-ir-" + camera->SerialNumber() +
@@ -83,18 +89,22 @@ int main(int argc, char** argv) {
 					"/rgb" + std::to_string(i) + ".png", rgb_image);
 
 				Util::writeToFile(resource_path + "cTch.csv", board_pose, i);
-
-				std::string franka_cmd = "./devel/lib/camera_calibration_panda/collect-pose " +
-					resource_path + " " + ROBOT_IP + " " + std::to_string(i);
-
-				system(franka_cmd.c_str());
-
-				i++;
 			}
+			*/
 
 			cv::imshow("Detection", colorized_image);
 			cv::waitKey(0);
 		}
+
+		/*
+		std::string franka_cmd = "./devel/lib/camera_calibration_panda/collect-pose " +
+			resource_path + " " + ROBOT_IP + " " + std::to_string(i);
+
+		system(franka_cmd.c_str());
+
+		i++;
+		*/
+
 	}
 }
 

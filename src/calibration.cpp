@@ -2,11 +2,13 @@
 #include "calibration.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
+/*
 #define BOARD_SQUARE_LEN 0.0205f
 #define BOARD_MARKER_LEN 0.0155f
 #define BOARD_N_MARKERS 58
 #define BOARD_N_SQUARES_X 13
 #define BOARD_N_SQUARES_Y 9
+*/
 
 /*
 #define BOARD_SQUARE_LEN 0.093f
@@ -16,13 +18,11 @@
 #define BOARD_N_SQUARES_Y 2
 */
 
-/*
 #define BOARD_SQUARE_LEN 0.0565f
 #define BOARD_MARKER_LEN 0.0425f
 #define BOARD_N_MARKERS 7
 #define BOARD_N_SQUARES_X 5
 #define BOARD_N_SQUARES_Y 3
-*/
 
 /*
 #define BOARD_SQUARE_LEN 0.045f

@@ -33,7 +33,7 @@ CameraSensor::CameraSensor(rs2::device device) {
 void CameraSensor::SetupStreams() {
 
 	config_.enable_device(device_.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
-	config_.enable_stream(RS2_STREAM_INFRARED);
+	config_.enable_stream(RS2_STREAM_INFRARED, RS2_FORMAT_Y8);
 	config_.enable_stream(RS2_STREAM_DEPTH);
 	config_.enable_stream(RS2_STREAM_COLOR);
 
@@ -80,6 +80,11 @@ void CameraSensor::SetupStreams() {
 
 			intrinsics_[RS2_STREAM_INFRARED] = GetIntrinsics("ir");
 			dist_coeffs_[RS2_STREAM_INFRARED] = GetDistortionCoeffs("ir");
+			
+			auto sensor = device_.first<rs2::depth_sensor>();
+			sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 0);
+			sensor.set_option(RS2_OPTION_EXPOSURE, 50000.0f);
+			sensor.set_option(RS2_OPTION_GAIN, 39.0f);
 		}
 
 		if (StreamIsActive(RS2_STREAM_COLOR, &pipeline_profile_)) {
