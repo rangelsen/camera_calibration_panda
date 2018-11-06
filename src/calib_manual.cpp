@@ -19,16 +19,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset1/";
-
-	std::string rm_cmd = "rm -rf " + resource_path;
-	std::string mkdir_cmd = "mkdir " + resource_path;
-	std::string mkdir_ir_cmd = "mkdir " + resource_path + "calib-images-ir";
-	std::string mkdir_depth_cmd = "mkdir " + resource_path + "calib-images-depth";
-	system(rm_cmd.c_str());
-	system(mkdir_cmd.c_str());
-	system(mkdir_ir_cmd.c_str());
-	system(mkdir_depth_cmd.c_str());
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset/";
 
 	cv::Ptr<cv::aruco::Dictionary> dictionary = 
 		cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
@@ -39,9 +30,22 @@ int main(int argc, char** argv) {
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
 		std::ofstream file;
-		file.open(resource_path + "depth_scale.cfg", std::ios::app);
-		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale());
+		file.open(resource_path + "../depth_scale.cfg", std::ios::app);
+		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale()) + "\n";
 		file.close();
+
+		std::string rm_cmd = "rm -rf " + resource_path;
+		std::string mkdir_cmd = "mkdir " + resource_path;
+		std::string mkdir_ir_cmd = "mkdir " + resource_path + "calib-images-ir-" + camera->SerialNumber();
+		std::string mkdir_depth_cmd = "mkdir " + resource_path + "calib-images-depth-" + camera->SerialNumber();
+		std::string mkdir_rgb_cmd = "mkdir " + resource_path + "calib-images-rgb-" + camera->SerialNumber();
+		std::string mkdir_rgb_cmd_raw = "mkdir " + resource_path + "calib-images-rgb-raw-" + camera->SerialNumber();
+		system(rm_cmd.c_str());
+		system(mkdir_cmd.c_str());
+		system(mkdir_ir_cmd.c_str());
+		system(mkdir_depth_cmd.c_str());
+		system(mkdir_rgb_cmd.c_str());
+		system(mkdir_rgb_cmd_raw.c_str());
 	}
 
 	uint32_t i = 0;
@@ -50,20 +54,28 @@ int main(int argc, char** argv) {
 
 		for (CameraSensor* camera : CameraSensor::connected_devices) {
 
-			cv::Mat colorized_image, ir_image, depth_image;
+			cv::Mat colorized_image, ir_image, depth_image, rgb_image;
 			camera->CaptureIr(&ir_image);
 			camera->CaptureDepth(&depth_image);
+			camera->CaptureRgb(&rgb_image);
 
-			cv::cvtColor(ir_image, colorized_image, cv::COLOR_GRAY2RGB);
+			cv::cvtColor(rgb_image, colorized_image, cv::COLOR_BGR2RGB);
+
 			cv::Mat board_pose = calib.estimateCharucoPose(colorized_image, camera);
 
 			if (!board_pose.empty()) {
 
-				cv::imwrite(resource_path + "calib-images-ir/cam" + camera->SerialNumber() +
-					"ir" + std::to_string(i) + ".png", ir_image);
+				cv::imwrite(resource_path + "calib-images-ir-" + camera->SerialNumber() +
+					"/ir" + std::to_string(i) + ".png", ir_image);
 
-				cv::imwrite(resource_path + "calib-images-depth/cam" + camera->SerialNumber() +
-					"depth" + std::to_string(i) + ".png", depth_image);
+				cv::imwrite(resource_path + "calib-images-depth-" + camera->SerialNumber() +
+					"/depth" + std::to_string(i) + ".png", depth_image);
+
+				cv::imwrite(resource_path + "calib-images-rgb-" + camera->SerialNumber() +
+					"/rgb" + std::to_string(i) + ".png", colorized_image);
+
+				cv::imwrite(resource_path + "calib-images-rgb-raw-" + camera->SerialNumber() +
+					"/rgb" + std::to_string(i) + ".png", rgb_image);
 
 				Util::writeToFile(resource_path + "cTch.csv", board_pose, i);
 

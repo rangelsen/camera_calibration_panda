@@ -60,6 +60,8 @@ public:
 
     void CaptureIr(cv::Mat* image);
 
+	void CaptureRgb(cv::Mat* image);
+
     void RotateX(float angle);
 
     void RotateY(float angle);

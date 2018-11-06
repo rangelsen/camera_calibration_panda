@@ -33,9 +33,6 @@ int main(int argc, char** argv) {
 		exit(-1);
 	}
 
-	for (uint8_t i = 0; i < 4; i++)
-		std::cout << "argv[" << (int) i << "] = " << argv[i] << std::endl;
-
 	std::string storage_path = argv[1];
 	std::string robot_ip = argv[2];
 	uint32_t idx = std::atoi(argv[3]);

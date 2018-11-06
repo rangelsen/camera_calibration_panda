@@ -35,6 +35,7 @@ void CameraSensor::SetupStreams() {
 	config_.enable_device(device_.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
 	config_.enable_stream(RS2_STREAM_INFRARED);
 	config_.enable_stream(RS2_STREAM_DEPTH);
+	config_.enable_stream(RS2_STREAM_COLOR);
 
     pipeline_profile_ = pipeline_.start(config_);
 
@@ -79,6 +80,12 @@ void CameraSensor::SetupStreams() {
 
 			intrinsics_[RS2_STREAM_INFRARED] = GetIntrinsics("ir");
 			dist_coeffs_[RS2_STREAM_INFRARED] = GetDistortionCoeffs("ir");
+		}
+
+		if (StreamIsActive(RS2_STREAM_COLOR, &pipeline_profile_)) {
+
+			intrinsics_[RS2_STREAM_COLOR] = GetIntrinsics("ir");
+			dist_coeffs_[RS2_STREAM_COLOR] = GetDistortionCoeffs("rgb");
 		}
 	}
 }
@@ -139,6 +146,16 @@ void CameraSensor::CaptureIr(cv::Mat* image) {
 
     *image = cv::Mat(cv::Size(vframe.get_width(), vframe.get_height()),
                      CV_8UC1, (void*) vframe.get_data());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void CameraSensor::CaptureRgb(cv::Mat* image) {
+
+    // Warmup(&pipeline_, 10);
+    rs2::video_frame vframe = Capture().first(RS2_STREAM_COLOR).as<rs2::video_frame>();
+
+    *image = cv::Mat(cv::Size(vframe.get_width(), vframe.get_height()),
+                     CV_8UC3, (void*) vframe.get_data());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -413,6 +430,8 @@ rs2_stream CameraSensor::StringToStreamType(std::string stream_name) {
 		stream_type = RS2_STREAM_INFRARED;
 	else if (stream_name == "depth")
 		stream_type = RS2_STREAM_DEPTH;
+	else if (stream_name == "rgb")
+		stream_type = RS2_STREAM_COLOR;
 	
 	return stream_type;
 }

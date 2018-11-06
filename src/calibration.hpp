@@ -34,6 +34,8 @@ private:
 	 * @brief ChArUco board on which calibration is performed
 	 */
 	cv::Ptr<cv::aruco::Dictionary> dict_;
+	cv::Ptr<cv::aruco::CharucoBoard> board_;
+
 };
 
 

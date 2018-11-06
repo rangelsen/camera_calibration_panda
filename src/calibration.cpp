@@ -2,16 +2,43 @@
 #include "calibration.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-#define BOARD_SQUARE_LEN 0.034f
-#define BOARD_MARKER_LEN 0.026f
-#define BOARD_N_MARKERS 20
-#define BOARD_N_SQUARES_X 8
-#define BOARD_N_SQUARES_Y 5
+#define BOARD_SQUARE_LEN 0.0205f
+#define BOARD_MARKER_LEN 0.0155f
+#define BOARD_N_MARKERS 58
+#define BOARD_N_SQUARES_X 13
+#define BOARD_N_SQUARES_Y 9
+
+/*
+#define BOARD_SQUARE_LEN 0.093f
+#define BOARD_MARKER_LEN 0.07f
+#define BOARD_N_MARKERS 3
+#define BOARD_N_SQUARES_X 3
+#define BOARD_N_SQUARES_Y 2
+*/
+
+/*
+#define BOARD_SQUARE_LEN 0.0565f
+#define BOARD_MARKER_LEN 0.0425f
+#define BOARD_N_MARKERS 7
+#define BOARD_N_SQUARES_X 5
+#define BOARD_N_SQUARES_Y 3
+*/
+
+/*
+#define BOARD_SQUARE_LEN 0.045f
+#define BOARD_MARKER_LEN 0.034f
+#define BOARD_N_MARKERS 12
+#define BOARD_N_SQUARES_X 6
+#define BOARD_N_SQUARES_Y 4
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 Calibration::Calibration(cv::Ptr<cv::aruco::Dictionary> dict) {
 
 	dict_ = dict;
+
+	board_ = cv::aruco::CharucoBoard::create(BOARD_N_SQUARES_X,
+		BOARD_N_SQUARES_Y, BOARD_SQUARE_LEN, BOARD_MARKER_LEN, dict_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,8 +59,8 @@ cv::Mat Calibration::estimateCharucoPosePoints(cv::Mat& image, CameraSensor* cam
 
 		cv::aruco::drawDetectedMarkers(image, corners, charuco_ids);
 
-		cv::Mat intrin = camera->Intrinsics("ir");
-		cv::Mat dist_coeffs = camera->DistCoeffs("ir");
+		cv::Mat intrin = camera->Intrinsics("rgb");
+		cv::Mat dist_coeffs = camera->DistCoeffs("rgb");
 
 		cv::aruco::estimatePoseSingleMarkers(corners, BOARD_MARKER_LEN,
 			intrin, dist_coeffs, rot, trans); 	
@@ -68,27 +95,33 @@ cv::Mat Calibration::estimateCharucoPosePoints(cv::Mat& image, CameraSensor* cam
 cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 
 	std::vector<int> charuco_ids, all_ids;
-	std::vector<std::vector<cv::Point2f>> corners;
+	std::vector<std::vector<cv::Point2f>> corners, rejected_markers;
 	std::vector<cv::Point2f> all_corners;
+	cv::Ptr<cv::aruco::DetectorParameters> detector_params;
 	cv::aruco::detectMarkers(image, dict_, corners, charuco_ids);
 
 	float detection_ratio = (float) corners.size() / BOARD_N_MARKERS;
 
 	std::cout << "marker detection ratio: " << detection_ratio << std::endl;
 
+	/*
 	cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(
 		BOARD_N_SQUARES_X, BOARD_N_SQUARES_Y, BOARD_SQUARE_LEN, BOARD_MARKER_LEN, dict_);
+	*/
 
-	cv::Mat intrin = camera->Intrinsics("ir");
-	cv::Mat dist_coeffs = camera->DistCoeffs("ir");
+	cv::Mat intrin = camera->Intrinsics("rgb");
+	cv::Mat dist_coeffs = camera->DistCoeffs("rgb");
 
 	int interpolatedCorners = 0;
 
 	if(charuco_ids.size() > 0) {
 		
 		interpolatedCorners = cv::aruco::interpolateCornersCharuco(
-			corners, charuco_ids, image, board, all_corners, all_ids, intrin,
+			corners, charuco_ids, image, board_, all_corners, all_ids, intrin,
 			dist_coeffs);
+
+		cv::aruco::drawDetectedMarkers(image, corners, charuco_ids);
+
 	}
 
 	cv::Mat board_pose;
@@ -96,7 +129,7 @@ cv::Mat Calibration::estimateCharucoPose(cv::Mat& image, CameraSensor* camera) {
 	cv::Vec3d rot, trans;
 
 	bool has_board_pose = cv::aruco::estimatePoseCharucoBoard(all_corners,
-		all_ids, board, intrin, dist_coeffs, rot, trans);
+		all_ids, board_, intrin, dist_coeffs, rot, trans);
 
 	if (!has_board_pose)
 		return board_pose;
