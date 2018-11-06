@@ -22,6 +22,8 @@ public:
 
 	static void Initialize();
 
+	static void Destroy();
+
     void AcquireColorImage(cv::Mat* image);
 
     const Eigen::Matrix4f Extrinsics() const;
