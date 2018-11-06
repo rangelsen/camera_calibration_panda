@@ -36,11 +36,16 @@ int main(int argc, char** argv) {
 
 		std::string rm_cmd = "rm -rf " + resource_path;
 		std::string mkdir_cmd = "mkdir " + resource_path;
-		std::string mkdir_ir_cmd = "mkdir " + resource_path + "calib-images-ir-" + camera->SerialNumber();
-		std::string mkdir_depth_cmd = "mkdir " + resource_path + "calib-images-depth-" + camera->SerialNumber();
-		std::string mkdir_rgb_cmd = "mkdir " + resource_path + "calib-images-rgb-" + camera->SerialNumber();
-		std::string mkdir_rgb_cmd_raw = "mkdir " + resource_path + "calib-images-rgb-raw-" + camera->SerialNumber();
-		system(rm_cmd.c_str());
+		std::string mkdir_ir_cmd = "mkdir " + resource_path +
+			"calib-images-ir-" + camera->SerialNumber();
+		std::string mkdir_depth_cmd = "mkdir " + resource_path +
+			"calib-images-depth-" + camera->SerialNumber();
+		std::string mkdir_rgb_cmd = "mkdir " + resource_path +
+			"calib-images-rgb-" + camera->SerialNumber();
+		std::string mkdir_rgb_cmd_raw = "mkdir " + resource_path +
+			"calib-images-rgb-raw-" + camera->SerialNumber();
+
+		// system(rm_cmd.c_str());
 		system(mkdir_cmd.c_str());
 		system(mkdir_ir_cmd.c_str());
 		system(mkdir_depth_cmd.c_str());
