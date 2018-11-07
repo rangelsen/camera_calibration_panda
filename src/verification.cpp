@@ -5,16 +5,22 @@
 #include "calibration.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
+static const std::vector<std::string> CAMERA_SERIALS {
+
+	"810512060827",
+	"747612060748",
+};
+
+////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	std::string resource_path_prefix =
-		"/home/mrgribbot/Documents/calib-dataset1/";
-	
 	std::string local_work_dir =
 		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/";
 
 	std::string local_res = local_work_dir + "res/";
-
+	std::string resource_path_prefix = local_res + "calib-dataset3/";
+	
+	/*
 	{ // Index board poses that are visible from the camera
 
 		// Remove old poses
@@ -43,35 +49,37 @@ int main(int argc, char** argv) {
 
 			if (!board_pose.empty()) {
 
-				Util::writeToFile(local_res + "cTch_ver.csv", board_pose, i);
+				Util::writeToFile(resource_path_prefix + "cTch_ver.csv", board_pose, i);
 			}
 		}
 	}
+	*/
 
 	std::vector<int> bTe_indices;
 	std::vector<cv::Mat> bTe  = Util::readPosesFromFile(
 		resource_path_prefix + "bTe.csv", &bTe_indices);
 
-	std::vector<int> cTch_indices;
-	std::vector<cv::Mat> cTch = Util::readPosesFromFile(local_res +
-		"cTch_ver.csv", &cTch_indices);
+	for (uint16_t i = 0; i < CAMERA_SERIALS.size(); i++) {
 
-	std::string compute_camera_pose_cmd = "octave " + local_work_dir +
-		"src/estimate_camera_pose.m";
+		std::vector<int> cTch_indices;
+		std::vector<cv::Mat> cTch = Util::readPosesFromFile(resource_path_prefix +
+			"cTch_" + CAMERA_SERIALS[i] + ".csv", &cTch_indices);
 
-	system(compute_camera_pose_cmd.c_str());
+		std::cout << "read " << cTch.size() << " poses for camera "
+			<< CAMERA_SERIALS[i] << std::endl;
 
-	std::vector<cv::Mat> bTc = Util::readPosesFromFile(local_res + 
-		"bTc.csv", NULL);
+		std::vector<cv::Mat> bTc = Util::readPosesFromFile(
+			resource_path_prefix + "bTc_" + CAMERA_SERIALS[i] + ".csv", NULL);
 
-	std::vector<cv::Mat> eTch = Calibration::computeEndeffToCharuco(&bTe,
-		&bTe_indices, &cTch, &cTch_indices, bTc[0]);
+		std::vector<cv::Mat> eTch = Calibration::computeEndeffToCharuco(&bTe,
+			&bTe_indices, &cTch, &cTch_indices, bTc[0]);
 
-	for (uint32_t j = 0; j < eTch.size(); j++)
-		Util::writeToFile(local_res + "eTch.csv", eTch[j], j);
+		for (uint32_t j = 0; j < eTch.size(); j++)
+			Util::writeToFile(local_res + "eTch.csv", eTch[j], j);
 
-	std::string variance_cmd = "python3 " + local_work_dir + "src/avg_quat.py";
-	system(variance_cmd.c_str());
+		std::string variance_cmd = "python3 " + local_work_dir + "src/avg_quat.py";
+		system(variance_cmd.c_str());
+	}
 
 	return 0;
 }
