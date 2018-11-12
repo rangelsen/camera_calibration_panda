@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 		for (uint8_t j = 0; j < 4; j++) {
 
 			for (uint8_t k = 0; k < 4; k++)
-				endeff_pose.at<double>(j, k) = pose[j * 4 + k];
+				endeff_pose.at<double>(k, j) = pose[j * 4 + k];
 		}
 
 		Util::writeToFile(storage_path + "bTe.csv", endeff_pose, idx);

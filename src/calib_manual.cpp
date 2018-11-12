@@ -19,7 +19,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset3/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset4/";
 
 	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
@@ -31,6 +31,22 @@ int main(int argc, char** argv) {
 
 	Calibration calib(dictionary);
 	CameraSensor::Initialize();
+
+	/*
+	cv::Mat image, color;
+
+	while (true) {
+
+		for (CameraSensor* camera : CameraSensor::connected_devices) {
+
+			camera->CaptureIr(&image);
+			cv::cvtColor(image, color, cv::COLOR_GRAY2RGB);
+			cv::Mat board_pose = calib.estimateCharucoPose(color, camera);
+			cv::imshow("det", color);
+			cv::waitKey(0);
+		}
+	}
+	*/
 
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
@@ -85,7 +101,7 @@ int main(int argc, char** argv) {
 				cv::imwrite(resource_path + "calib-images-rgb-raw-" + camera->SerialNumber() +
 					"/rgb" + std::to_string(i) + ".png", rgb_image);
 
-				Util::writeToFile(resource_path + "cTch-" + camera->SerialNumber() + ".csv", board_pose, i);
+				Util::writeToFile(resource_path + "cTch_" + camera->SerialNumber() + ".csv", board_pose, i);
 
 				cv::imshow("Detection", colorized_image);
 				cv::waitKey(0);

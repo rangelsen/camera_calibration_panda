@@ -18,19 +18,19 @@
 #define BOARD_N_SQUARES_Y 2
 */
 
+/*
 #define BOARD_SQUARE_LEN 0.0565f
 #define BOARD_MARKER_LEN 0.0425f
 #define BOARD_N_MARKERS 7
 #define BOARD_N_SQUARES_X 5
 #define BOARD_N_SQUARES_Y 3
+*/
 
-/*
 #define BOARD_SQUARE_LEN 0.045f
 #define BOARD_MARKER_LEN 0.034f
 #define BOARD_N_MARKERS 12
 #define BOARD_N_SQUARES_X 6
 #define BOARD_N_SQUARES_Y 4
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 Calibration::Calibration(cv::Ptr<cv::aruco::Dictionary> dict) {
@@ -157,22 +157,16 @@ std::vector<cv::Mat> Calibration::computeEndeffToCharuco(
 
 	std::vector<cv::Mat> eTch;
 
-	for (uint32_t i = 0; i < cTch_indices->size(); i++) {
+	for (uint32_t i = 0; i < bTe_indices->size(); i++) {
 
-		int endeff_idx;
+		for (uint32_t j = 0; j < cTch_indices->size(); j++) {
+			
+			if ((*cTch_indices)[j] == (*bTe_indices)[i]) {
 
-		for (uint32_t j = 0; j < bTe_indices->size(); j++) {
-
-			if ((*cTch_indices)[i] == (*bTe_indices)[j] &&
-				(*bTe_indices)[j] >= 0) {
-
-				endeff_idx = j;
-				break;
+				cv::Mat tf = (*bTe)[i].inv() * bTc * (*cTch)[j];
+				eTch.push_back(tf);
 			}
 		}
-
-		cv::Mat tf = (*bTe)[endeff_idx].inv() * bTc * (*cTch)[i];
-		eTch.push_back(tf);
 	}
 
 	return eTch;

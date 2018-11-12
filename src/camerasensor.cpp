@@ -83,8 +83,8 @@ void CameraSensor::SetupStreams() {
 			
 			auto sensor = device_.first<rs2::depth_sensor>();
 			sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 0);
-			sensor.set_option(RS2_OPTION_EXPOSURE, 50000.0f);
-			sensor.set_option(RS2_OPTION_GAIN, 39.0f);
+			sensor.set_option(RS2_OPTION_EXPOSURE, 90000.0f);
+			sensor.set_option(RS2_OPTION_GAIN, 16.0f);
 		}
 
 		if (StreamIsActive(RS2_STREAM_COLOR, &pipeline_profile_)) {

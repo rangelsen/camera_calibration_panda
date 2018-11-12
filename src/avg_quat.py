@@ -3,6 +3,7 @@ import numpy.matlib as npm
 import csv
 import pyquaternion as pq
 import math
+import sys
 
 ################################################################################
 def averageQuaternions(Q):
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 
 	quaternions = np.empty([0, 4], dtype=float)
 
-	with open('/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/eTch.csv') as csv_file:
+	with open('/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/' + sys.argv[1]) as csv_file:
 
 		csv_reader = csv.reader(csv_file, delimiter=',')
 
