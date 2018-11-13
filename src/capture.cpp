@@ -12,7 +12,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset-ver3-1/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/verification-defaul-camera-settings/";
 
 	std::string mkdir_cmd = "mkdir " + resource_path;
 	system(mkdir_cmd.c_str());
@@ -61,11 +61,11 @@ int main(int argc, char** argv) {
 			cv::imwrite(resource_path + "ver-images-rgb-raw-" + camera->SerialNumber() +
 				"/rgb" + std::to_string(i) + ".png", rgb_image);
 
-				i++;
-
 			cv::imshow("Capture", colorized_image);
 			cv::waitKey(0);
 		}
+
+		i++;
 	}
 }
 
