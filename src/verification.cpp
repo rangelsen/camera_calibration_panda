@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 static const std::vector<std::string> CAMERA_SERIALS {
 
-	// "810512060827",
+	"810512060827",
 	"747612060748",
 };
 
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/";
 
 	std::string local_res = local_work_dir + "res/";
-	std::string resource_path_prefix = local_res + "calib-dataset4/";
+	std::string resource_path_prefix = local_res + "calib-dataset5/";
 	
 	/*
 	{ // Index board poses that are visible from the camera

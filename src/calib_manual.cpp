@@ -19,7 +19,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset4/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
 	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
