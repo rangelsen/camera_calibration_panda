@@ -1,0 +1,12 @@
+TASKS
+	- Separate trajectory generation from controller developed by Håkon
+		- s, kappa, etc were introduced to make the movements smoother and
+		thus they can be removed without sacrificing fundamental functionality
+
+	- Develop a robust system for multiple camera calibration
+		- Can use ICP to obtain a metric of how good the calibration is and
+		also perform corrections
+		- start with visual inspection as a validation method of the calibration
+
+	- Define obstacles for the robot in a sensible manner
+		- voxel grid + sedt3d?

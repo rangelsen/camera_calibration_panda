@@ -1,0 +1,5 @@
+include_rules
+
+: <main> <imgui> <input> <visualization> <graphics> <common> |> ^ LNK %o^ $(CXX) %<main> %<common> %<input> %<imgui> %<visualization> %<graphics> $(LDFLAGS) -lopencv_core -o %o |> $(ROOT_DIR)/$(TARGET)
+: <pointcloud> <imgui> <graphics> <input> <common> <visualization> |> ^ LNK %o^ $(CXX) %<pointcloud> %<graphics> %<input> %<common> %<visualization> %<imgui> $(LDFLAGS) -lrealsense2 -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -o %o |> $(ROOT_DIR)/pointcloud-view
+

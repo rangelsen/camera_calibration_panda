@@ -1,0 +1,2 @@
+include_rules
+: foreach *.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<%d>

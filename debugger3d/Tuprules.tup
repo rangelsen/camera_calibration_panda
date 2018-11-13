@@ -1,0 +1,32 @@
+TARGET = debugger3d
+
+# Directories
+ROOT_DIR = $(TUP_CWD)
+
+ifeq (@(TUP_PLATFORM),linux)
+    
+    SOURCE_DIR  = $(ROOT_DIR)/src
+    BUILD_DIR   = $(ROOT_DIR)/build
+    LIBRARY_DIR = $(ROOT_DIR)/lib
+    LIB_SRC_DIR = $(LIBRARY_DIR)/src
+    LIB_BIN_DIR = $(LIBRARY_DIR)/bin/linux-x86_64
+    BUILD_DIR   = $(BUILD_DIR)/linux-x86_64
+    BIN_DIR     = $(ROOT_DIR)/bin/linux-x86_64
+endif
+
+# Compilers
+CC  = gcc
+CXX = g++
+
+CFLAGS  = -Wall -g -I$(SOURCE_DIR) -I$(LIB_SRC_DIR)
+
+LDFLAGS += -lSDL2 -lGLEW -lGL -lassimp -lSOIL -lpthread -lzmq
+# LDFLAGS += -L$(BIN_DIR)
+
+# Macros
+!cc = |> ^ CXX %f^ $(CXX) -std=c++11 $(CFLAGS) -c %f -o %o |> %B.o
+!c  = |> ^ CC %f^ $(CC) -std=c11 $(CFLAGS) -c %f -o %o    |> %B.o
+
+!ar = |> ^ AR %f^ ar crs %o %f |>
+!lc = |> $(CXX) %f $(LDFLAGS) -o %o |>
+

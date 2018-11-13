@@ -1,0 +1,4 @@
+include_rules
+: main.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<main>
+: camerasensor.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<pointcloud>
+: pointcloud-view.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<pointcloud>

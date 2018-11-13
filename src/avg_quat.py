@@ -81,6 +81,7 @@ def normalizeRotation(rot):
 if __name__ == "__main__":
 
 	quaternions = np.empty([0, 4], dtype=float)
+	positions = np.empty([0, 3], dtype=float)
 
 	with open('/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/' + sys.argv[1]) as csv_file:
 
@@ -89,6 +90,9 @@ if __name__ == "__main__":
 		for row in csv_reader:
 
 			tf = parseRow(row)
+
+			pos = np.array(tf[0:3, 3]).reshape(1, 3);
+			positions = np.append(positions, pos, axis=0);
 			rot_n = normalizeRotation(tf[0:3, 0:3])
 			tf[0:3, 0:3] = rot_n;
 
@@ -98,18 +102,29 @@ if __name__ == "__main__":
 
 	avg_quat = averageQuaternions(quaternions)
 
-	print("average quaternion:", avg_quat)
-
 	pq_avg_q = pq.Quaternion(avg_quat)
 
 	N = quaternions.shape[0]
-	squared_diff_sum = 0.0
+	squared_diff_sum_quat = 0.0
+	squared_diff_sum_pos = np.zeros(3, dtype=float)
+
+	avg_pos = np.zeros(3, dtype=float)
+
+	for i in range(0, N):
+		avg_pos += positions[i]
+
+	avg_pos = avg_pos / N
 
 	for i in range(0, N):
 		q = pq.Quaternion(quaternions[i])
-		squared_diff_sum += math.pow(pq.Quaternion.distance(pq_avg_q, q), 2)
-	
-	quat_variance = squared_diff_sum / N
+		squared_diff_sum_quat += math.pow(pq.Quaternion.distance(pq_avg_q, q), 2)
 
-	print("variance:", quat_variance)
+		for j in range(0, 3):
+			squared_diff_sum_pos[j] += math.pow(positions[i, j] - avg_pos[j], 2)
+
+	quat_variance = squared_diff_sum_quat / N
+	pos_variance = squared_diff_sum_pos / N
+	
+	print("position variance:", pos_variance)
+	print("orientation variance:", quat_variance)
 		
