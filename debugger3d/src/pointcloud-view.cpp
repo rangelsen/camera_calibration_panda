@@ -68,7 +68,7 @@ std::vector<Vertex> depthImageToPointCloud(cv::Mat* image, CameraSensor* camera,
 
 		for (int j = 0; j < image->rows; j++) {
 
-			float depth = 0.001f * image->at<uint16_t>(j, i);
+			float depth = camera->MeterScale() * image->at<uint16_t>(j, i);
 
 			if (depth == 0.0f) continue;
 
@@ -111,46 +111,64 @@ int main(int argc, char** argv) {
 
 	Camera* vcamera = new Camera(glm::vec3(0.0f, 0.5f, 0.0f), 0.0f, 0.0f);
 	
-	Grid* grid = grid_create(-0.05f, -0.05f, 0.1f, 0.1f);
+	Grid* grid = grid_create(-0.5f, -0.5f, 1.0f, 1.0f);
 	RenderBundle* rbundle_grid = grid_create_renderbundle(grid);
 
 	visualization_setup(vcamera);
 	visualization_submit_for_rendering(rbundle_grid);
 
+	glm::mat4 tf(1.0f);
+	tf = glm::rotate(tf, (float) -M_PI_2, glm::vec3(1.0f, 0.0f, 0.0f));
+
+    CoordFrame* cf_orig = coordframe_create(0.04f);
+    cf_orig->pose = tf;
+    cf_orig->pose = glm::translate(tf, glm::vec3(0.0f, 0.0f, 0.001f));
+    RenderBundle* rbundle_cf_orig = coordframe_create_renderbundle(cf_orig);
+    visualization_submit_for_rendering(rbundle_cf_orig);
+
 	std::string res_path_prefix =
-		"../camera_calibration_panda/res/calib-dataset5/";
+		"../res/calib-dataset5/";
 		// "/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
     std::vector<PointCloud*> pclouds;
 
 	CameraSensor::Initialize();
+    {
+        for (CameraSensor* camera : CameraSensor::connected_devices) {
 
-	for (CameraSensor* camera : CameraSensor::connected_devices) {
+            std::string serial = camera->SerialNumber();
 
-		std::string serial = camera->SerialNumber();
+            cv::Mat depth = cv::imread(
+                res_path_prefix + "verification-custom-camera-settings/ver-images-depth-" +
+                serial + "/depth0.png",
+                cv::IMREAD_UNCHANGED
+            );
 
-		cv::Mat depth = cv::imread(
-			res_path_prefix + "verification-default-camera-settings/ver-images-depth-" +
-			serial + "/depth0.png",
-			cv::IMREAD_UNCHANGED
-		);
+            cv::Mat cv_pose = Util::readPosesFromFile(res_path_prefix +
+                "bTc_" + serial + ".csv", NULL)[0];
 
-		cv::Mat cv_pose = Util::readPosesFromFile(res_path_prefix +
-			"bTc_" + serial + ".csv", NULL)[0];
+            Util::printCvMat(cv_pose);
+            glm::mat4 pose = cvMatToGlm(&cv_pose);
 
-		Util::printCvMat(cv_pose);
-		glm::mat4 pose = cvMatToGlm(&cv_pose);
+            glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
 
-		std::vector<Vertex> points = depthImageToPointCloud(&depth, camera, glm::vec3(0.0f, 1.0f, 0.0f));
+            if (camera->SerialNumber() == "810512060827")
+                color = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		PointCloud* pcloud = new PointCloud;
-		pcloud->pose = glm::inverse(pose);
-		RenderBundle* rbundle_pcloud = setupForRendering(pcloud, &points);
-		visualization_submit_for_rendering(rbundle_pcloud);
+            std::vector<Vertex> points = depthImageToPointCloud(&depth, camera, color);
 
-        pclouds.push_back(pcloud);
-	}
+            PointCloud* pcloud = new PointCloud;
+            pcloud->pose = tf * pose;
+            RenderBundle* rbundle_pcloud = setupForRendering(pcloud, &points);
+            visualization_submit_for_rendering(rbundle_pcloud);
+            pclouds.push_back(pcloud);
 
+            CoordFrame* cf = coordframe_create(0.02f);
+            cf->pose = pcloud->pose;
+            RenderBundle* rbundle_cf = coordframe_create_renderbundle(cf);
+            visualization_submit_for_rendering(rbundle_cf);
+        }
+    }
 	CameraSensor::Destroy();
 
 	InputHandler::SetRotationSpeed(0.03f);

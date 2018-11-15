@@ -72,11 +72,11 @@ void coordframe_render(void* entity, RenderInfo* rinfo) {
     glUniformMatrix4fv(glGetUniformLocation(cf->shader->Id(), "view_proj"), 1,
 		GL_FALSE, &vp[0][0]);
 
+    // printf("%p: [%f, %f, %f]\n", entity, cf->pose[3][0], cf->pose[3][1], cf->pose[3][2]);
     glUniformMatrix4fv(glGetUniformLocation(cf->shader->Id(), "model"), 1,
 		GL_FALSE, &cf->pose[0][0]);
 
 	glBindVertexArray(cf->glarray.vao);
-	// glLineWidth(10.0f);
 	glDrawArrays(GL_LINES, 0, cf->glarray.n_vertices);
 	glBindVertexArray(0);
 	cf->shader->Unbind();

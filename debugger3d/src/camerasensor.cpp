@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "camerasensor.hpp"
+#include <librealsense2/rs_option.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 std::vector<CameraSensor*> CameraSensor::connected_devices = std::vector<CameraSensor*>();
@@ -51,7 +52,10 @@ void CameraSensor::SetupStreams() {
 			depth_intrinsics_ = depth_stream.get_intrinsics();
 
 			auto sensor = device_.first<rs2::depth_sensor>();
-			// meter_scale_ = sensor.get_option(RS2_CAMERA_OPTION_DEPTH_UNITS);
+            meter_scale_ = sensor.get_option(RS2_OPTION_DEPTH_UNITS);
+            std::cout << "meter scale: " << meter_scale_ << std::endl;
+
+            /*
 			rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
 
 			int w = frame.get_width();
@@ -77,6 +81,7 @@ void CameraSensor::SetupStreams() {
 			}
 
 			std::cout << "meter scale [" + SerialNumber() + "] " << meter_scale_ << std::endl;
+            */
 		}
 
 		if (StreamIsActive(RS2_STREAM_INFRARED, &pipeline_profile_)) {
