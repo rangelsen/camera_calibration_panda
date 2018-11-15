@@ -20,7 +20,7 @@ CXX = g++
 
 CFLAGS  = -Wall -g -I$(SOURCE_DIR) -I$(LIB_SRC_DIR)
 
-LDFLAGS += -lSDL2 -lGLEW -lGL -lassimp -lSOIL -lpthread -lzmq
+LDFLAGS += -lSDL2 -lGLEW -lGL -lassimp -lSOIL
 # LDFLAGS += -L$(BIN_DIR)
 
 # Macros

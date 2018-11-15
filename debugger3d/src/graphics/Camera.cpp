@@ -1,6 +1,5 @@
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include <math.h>
 
 #include "Camera.hpp"

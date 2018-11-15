@@ -4,7 +4,6 @@
 #include <string>
 #include <Eigen/Core>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 
 #include <camerasensor.hpp>
 #include <graphics/Display.hpp>
@@ -105,9 +104,6 @@ glm::mat4 cvMatToGlm(cv::Mat* pose) {
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	CameraSensor::Initialize();
-	CameraSensor* camera = CameraSensor::connected_devices[0];
-
 	Display* display = new Display();
 
 	glEnable(GL_LINE_SMOOTH);
@@ -122,9 +118,14 @@ int main(int argc, char** argv) {
 	visualization_submit_for_rendering(rbundle_grid);
 
 	std::string res_path_prefix =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
+		"../camera_calibration_panda/res/calib-dataset5/";
+		// "/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
-	for (CameraSensor* camera : CameraSensor::connected_devices[0]) {
+    std::vector<PointCloud*> pclouds;
+
+	CameraSensor::Initialize();
+
+	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
 		std::string serial = camera->SerialNumber();
 
@@ -134,18 +135,20 @@ int main(int argc, char** argv) {
 			cv::IMREAD_UNCHANGED
 		);
 
-		cv::Mat pose = Util::readPosesFromFile(res_path_prefix +
+		cv::Mat cv_pose = Util::readPosesFromFile(res_path_prefix +
 			"bTc_" + serial + ".csv", NULL)[0];
 
-		Util::printCvMat(pose);
-		glm::mat4 pose1 = cvMatToGlm(&pose);
+		Util::printCvMat(cv_pose);
+		glm::mat4 pose = cvMatToGlm(&cv_pose);
 
 		std::vector<Vertex> points = depthImageToPointCloud(&depth, camera, glm::vec3(0.0f, 1.0f, 0.0f));
 
-		PointCloud* pcloud;
-		pcloud.pose = glm::inverse(pose);
-		RenderBundle* rbundle_pcloud1 = setupForRendering(&pcloud1, &points1);
-		visualization_submit_for_rendering(rbundle_pcloud1);
+		PointCloud* pcloud = new PointCloud;
+		pcloud->pose = glm::inverse(pose);
+		RenderBundle* rbundle_pcloud = setupForRendering(pcloud, &points);
+		visualization_submit_for_rendering(rbundle_pcloud);
+
+        pclouds.push_back(pcloud);
 	}
 
 	CameraSensor::Destroy();

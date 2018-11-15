@@ -2,7 +2,6 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <common/Utility.hpp>
-#include <glm/gtx/string_cast.hpp>
 
 #include "visualization.hpp"
 
