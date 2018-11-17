@@ -102,6 +102,21 @@ glm::mat4 cvMatToGlm(cv::Mat* pose) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void printGlmMat(glm::mat4 mat) {
+
+    std::cout << "glm::mat4" << std::endl;
+    for (uint8_t i = 0; i < 4; i++) {
+
+        for (uint8_t j = 0; j < 4; j++) {
+
+            std::cout << mat[j][i] << " ";
+        }
+
+        std::cout << std::endl;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
 	Display* display = new Display();
@@ -159,12 +174,16 @@ int main(int argc, char** argv) {
 
             PointCloud* pcloud = new PointCloud;
             pcloud->pose = tf * pose;
+            std::cout << "pcloud pose" << std::endl;
+            printGlmMat(pcloud->pose);
             RenderBundle* rbundle_pcloud = setupForRendering(pcloud, &points);
             visualization_submit_for_rendering(rbundle_pcloud);
             pclouds.push_back(pcloud);
 
             CoordFrame* cf = coordframe_create(0.02f);
             cf->pose = pcloud->pose;
+            std::cout << "cf pose" << std::endl;
+            printGlmMat(cf->pose);
             RenderBundle* rbundle_cf = coordframe_create_renderbundle(cf);
             visualization_submit_for_rendering(rbundle_cf);
         }
@@ -181,7 +200,7 @@ int main(int argc, char** argv) {
 
 		visualization_render();
 
-		// std::cout << glm::to_string(vcamera->Position()) << std::endl;
+        printf("cam pos: [%f, %f, %f]\n", vcamera->Position().x, vcamera->Position().y, vcamera->Position().z);
 		display->Update();
 	}
 
