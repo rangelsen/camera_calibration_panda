@@ -31,8 +31,8 @@ function estimate_camera_pose()
 		BB(:, start_col:(start_col + 3)) = B;
 	end
 
-	% cTb = andreff(AA, BB);
-	cTb = park(AA, BB);
+	cTb = andreff(AA, BB)
+	cTb = park(AA, BB)
 	% cTb = daniilidis(AA, BB);
 
 	bTc= inv(cTb)
