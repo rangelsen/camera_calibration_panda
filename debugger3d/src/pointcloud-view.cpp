@@ -157,7 +157,7 @@ int main(int argc, char** argv) {
             cv::Mat depth = cv::imread(
                 // res_path_prefix + "verification-custom-camera-settings/ver-images-depth-" +
                 res_path_prefix + "calib-images-depth-" +
-                serial + "/depth0.png",
+                serial + "/depth7.png",
                 cv::IMREAD_UNCHANGED
             );
 

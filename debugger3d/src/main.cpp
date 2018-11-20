@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
 
 	Camera* vcamera = new Camera(glm::vec3(0.0f, 0.5f, 0.0f), 0.0f, 0.0f);
 	
-	Grid* grid = grid_create(-0.05f, -0.05f, 0.1f, 0.1f);
+	Grid* grid = grid_create(-0.5f, -0.5f, 1.0f, 1.0f);
 	RenderBundle* rbundle_grid = grid_create_renderbundle(grid);
 
 	visualization_setup(vcamera);
