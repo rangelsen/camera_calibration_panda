@@ -12,7 +12,7 @@
 int main(int argc, char** argv) {
 
 	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/verification-defaul-camera-settings/";
+		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5-test/verification-default-camera-settings/";
 
 	std::string mkdir_cmd = "mkdir " + resource_path;
 	system(mkdir_cmd.c_str());

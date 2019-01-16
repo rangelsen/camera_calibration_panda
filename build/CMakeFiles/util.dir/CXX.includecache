@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mrgribbot/Documents/camera_calibration_panda/src/util.cpp
+queue
+-
+string
+-
+sstream
+-
+iostream
+-
+fstream
+-
+iomanip
+-
+util.hpp
+/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
+
+/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
+Eigen/Geometry
+-
+opencv2/core/core.hpp
+-
+string
+-
+
