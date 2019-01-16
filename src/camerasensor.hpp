@@ -3,7 +3,7 @@
 
 #include <librealsense2/rs.hpp>
 #include <librealsense2/rsutil.h>
-#include <Eigen/Eigen>
+#include <eigen3/Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <opencv2/opencv.hpp>
 /*

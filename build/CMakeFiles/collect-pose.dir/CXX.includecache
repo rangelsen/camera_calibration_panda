@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/pose-collection.cpp
+/home/marolab/Documents/camera_calibration_panda/src/pose-collection.cpp
 iostream
 -
 string
@@ -20,10 +20,10 @@ franka/model.h
 stdio.h
 -
 util.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/Documents/camera_calibration_panda/src/util.hpp
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
-Eigen/Geometry
+/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+eigen3/Eigen/Geometry
 -
 opencv2/core/core.hpp
 -
@@ -56,6 +56,10 @@ array
 ostream
 -
 
+/usr/local/include/franka/lowpass_filter.h
+cmath
+-
+
 /usr/local/include/franka/model.h
 array
 -
@@ -80,6 +84,8 @@ franka/command_types.h
 franka/control_types.h
 -
 franka/duration.h
+-
+franka/lowpass_filter.h
 -
 franka/robot_state.h
 -

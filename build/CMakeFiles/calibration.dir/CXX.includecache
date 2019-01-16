@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,26 +6,26 @@
 
 #IncludeRegexTransform: 
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/calibration.cpp
+/home/marolab/Documents/camera_calibration_panda/src/calibration.cpp
 iostream
 -
 calibration.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
 opencv2/core/core.hpp
 -
 opencv2/aruco/charuco.hpp
 -
 camerasensor.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h
 -
-Eigen/Eigen
+eigen3/Eigen/Eigen
 -
 glm/glm.hpp
 -

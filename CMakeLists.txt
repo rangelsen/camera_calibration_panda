@@ -3,11 +3,13 @@ project(camera_calibration_panda)
 
 add_compile_options(-std=c++11 -g)
 
-find_package(Boost REQUIRED system filesystem date_time thread)
+# find_package(Boost REQUIRED system filesystem date_time thread)
 find_package(OpenCV REQUIRED core imgproc highgui aruco)
-find_package(Franka REQUIRED)
+# find_package(Franka REQUIRED)
 
-find_library(REALSENSE2_LIBRARY realsense2)
+# find_library(REALSENSE2_LIBRARY realsense2)
+# find_library(Frank_LIBRARY franka)
+
 include_directories(SYSTEM ${THIS_PACKAGE_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIRS})
 
 add_library(util STATIC src/util.cpp)
@@ -25,10 +27,10 @@ add_executable(capture src/capture.cpp)
 
 # target_link_libraries(robot ${catkin_LIBRARIES})
 # target_link_libraries(manual_pose_pub ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util)
-target_link_libraries(camera ${OpenCV_LIBRARIES} ${REALSENSE2_LIBRARY})
+target_link_libraries(camera ${OpenCV_LIBRARIES} -lrealsense2)
 target_link_libraries(calibration ${OpenCV_LIBRARIES} camera util)
 # target_link_libraries(calib ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} util camera calibration)
-target_link_libraries(calib_manual ${Franka_LIBRARIES} ${OpenCV_LIBRARIES} util camera calibration)
+target_link_libraries(calib_manual ${OpenCV_LIBRARIES} -lfranka util camera calibration)
 target_link_libraries(verification ${OpenCV_LIBRARIES} util camera calibration)
-target_link_libraries(collect-pose ${OpenCV_LIBRARIES} ${Franka_LIBRARIES} util)
+target_link_libraries(collect-pose ${OpenCV_LIBRARIES} -lfranka util)
 target_link_libraries(capture ${OpenCV_LIBRARIES} util camera)

@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,20 +6,20 @@
 
 #IncludeRegexTransform: 
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
 opencv2/core/core.hpp
 -
 opencv2/aruco/charuco.hpp
 -
 camerasensor.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h
 -
-Eigen/Eigen
+eigen3/Eigen/Eigen
 -
 glm/glm.hpp
 -
@@ -30,23 +30,23 @@ pcl/point_types.h
 pcl/point_cloud.h
 -
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
-Eigen/Geometry
+/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+eigen3/Eigen/Geometry
 -
 opencv2/core/core.hpp
 -
 string
 -
 
-/home/mrgribbot/Documents/camera_calibration_panda/src/verification.cpp
+/home/marolab/Documents/camera_calibration_panda/src/verification.cpp
 iostream
 -
 opencv2/core/core.hpp
 -
 util.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/Documents/camera_calibration_panda/src/util.hpp
 calibration.hpp
-/home/mrgribbot/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
