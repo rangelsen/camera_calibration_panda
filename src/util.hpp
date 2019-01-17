@@ -5,6 +5,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 namespace Util {
 
+	typedef struct CalibConfig {
+
+		std::string rig_name;
+	} CalibConfig;
+
     bool validXYZ(double x, double y, double z);
 
     bool getUserPosition(double* x, double* y, double* z, bool* exit);
@@ -27,6 +32,11 @@ namespace Util {
 	 * a vector of floats
 	 */
 	std::vector<float> splitf(std::string str, std::string delim);
+
+	std::vector<std::string> split(std::string& str, char delim);
+
+	CalibConfig readConfig(std::string filename);
+
 };
 
 /// @file

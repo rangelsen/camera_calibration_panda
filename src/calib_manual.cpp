@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <unistd.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/aruco/charuco.hpp>
@@ -18,8 +19,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
+	char cwd_buf[1024];
+	getcwd(cwd_buf, 1024);
+	strcat(cwd_buf, "/../");
+
+	std::string root_path = std::string(cwd_buf);
+
+	Util::CalibConfig calib_config = Util::readConfig(root_path + "config");
+
+	std::string resource_path = root_path + "res/" + calib_config.rig_name + "/"; 
+
+	/*
 	std::string resource_path =
 		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
+	*/
 
 	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
@@ -31,22 +44,6 @@ int main(int argc, char** argv) {
 
 	Calibration calib(dictionary);
 	CameraSensor::Initialize();
-
-	/*
-	cv::Mat image, color;
-
-	while (true) {
-
-		for (CameraSensor* camera : CameraSensor::connected_devices) {
-
-			camera->CaptureIr(&image);
-			cv::cvtColor(image, color, cv::COLOR_GRAY2RGB);
-			cv::Mat board_pose = calib.estimateCharucoPose(color, camera);
-			cv::imshow("det", color);
-			cv::waitKey(0);
-		}
-	}
-	*/
 
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
