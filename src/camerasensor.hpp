@@ -89,6 +89,8 @@ public:
 	pcl::PointCloud<pcl::PointXYZ>::Ptr CapturePointCloud();
 	*/
 
+	cv::Mat GetIntrinsics(std::string stream_type);
+
 private:
     void ActivateStream(rs2_stream stream, rs2::config* config);
 
@@ -106,8 +108,6 @@ private:
     void Warmup(rs2::pipeline* pipeline, uint32_t n_frames);
 
 	static rs2_stream StringToStreamType(std::string stream_name);
-
-	cv::Mat GetIntrinsics(std::string stream_type);
 
 	cv::Mat GetDistortionCoeffs(std::string stream_name);
 

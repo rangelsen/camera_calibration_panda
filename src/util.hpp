@@ -37,6 +37,7 @@ namespace Util {
 
 	CalibConfig readConfig(std::string filename);
 
+	std::string getRootPath();
 };
 
 /// @file

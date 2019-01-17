@@ -142,8 +142,10 @@ int main(int argc, char** argv) {
     RenderBundle* rbundle_cf_orig = coordframe_create_renderbundle(cf_orig);
     visualization_submit_for_rendering(rbundle_cf_orig);
 
+	std::string root_dir = Util::getRootDir();
+
 	std::string res_path_prefix =
-		"../res/calib-dataset5/";
+		root_dir + "res/" + std::string(argv[1]) + "/";
 		// "/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
     std::vector<PointCloud*> pclouds;

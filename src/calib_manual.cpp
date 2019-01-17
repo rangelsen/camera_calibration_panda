@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <unistd.h>
+#include <cassert>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/aruco/charuco.hpp>
@@ -19,20 +20,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	char cwd_buf[1024];
-	getcwd(cwd_buf, 1024);
-	strcat(cwd_buf, "/../");
+	std::string root_path = Util::getRootPath();
 
-	std::string root_path = std::string(cwd_buf);
-
-	Util::CalibConfig calib_config = Util::readConfig(root_path + "config");
-
-	std::string resource_path = root_path + "res/" + calib_config.rig_name + "/"; 
-
-	/*
-	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
-	*/
+	assert(argc > 1);
+	std::string resource_path = root_path + "res/" + std::string(argv[1]) + "/"; 
 
 	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
@@ -47,9 +38,12 @@ int main(int argc, char** argv) {
 
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
+		std::string intrin_string = Util::poseToString(camera->GetIntrinsics("depth"));
+
 		std::ofstream file;
-		file.open(resource_path + "../depth_scale.cfg", std::ios::app);
-		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale()) + "\n";
+		file.open(resource_path + "camera_properties.csv", std::ios::app);
+		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale()) +
+			+ "," + intrin_string + "\n";
 		file.close();
 
 		std::string mkdir_ir_cmd = "mkdir " + resource_path +
@@ -105,8 +99,9 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		std::string franka_cmd = "./devel/lib/camera_calibration_panda/collect-pose " +
+		std::string franka_cmd = root_path + "build/collect-pose " +
 			resource_path + " " + ROBOT_IP + " " + std::to_string(i);
+
 		system(franka_cmd.c_str());
 
 		i++;

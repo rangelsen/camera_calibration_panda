@@ -250,5 +250,15 @@ Util::CalibConfig Util::readConfig(std::string filename) {
 	return config;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+std::string Util::getRootPath() {
+
+	char cwd_buf[1024];
+	getcwd(cwd_buf, 1024);
+	strcat(cwd_buf, "/../");
+
+	return std::string(cwd_buf);
+}
+
 /// @file
 
