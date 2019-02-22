@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <unistd.h>
+#include <cassert>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/aruco/charuco.hpp>
@@ -18,8 +20,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	std::string resource_path =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
+	std::string root_path = Util::getRootPath();
+
+	assert(argc > 1);
+	std::string resource_path = root_path + "res/" + std::string(argv[1]) + "/"; 
 
 	std::string rm_cmd = "rm -rf " + resource_path;
 	std::string mkdir_cmd = "mkdir " + resource_path;
@@ -32,27 +36,14 @@ int main(int argc, char** argv) {
 	Calibration calib(dictionary);
 	CameraSensor::Initialize();
 
-	/*
-	cv::Mat image, color;
-
-	while (true) {
-
-		for (CameraSensor* camera : CameraSensor::connected_devices) {
-
-			camera->CaptureIr(&image);
-			cv::cvtColor(image, color, cv::COLOR_GRAY2RGB);
-			cv::Mat board_pose = calib.estimateCharucoPose(color, camera);
-			cv::imshow("det", color);
-			cv::waitKey(0);
-		}
-	}
-	*/
-
 	for (CameraSensor* camera : CameraSensor::connected_devices) {
 
+		std::string intrin_string = Util::poseToString(camera->GetIntrinsics("depth"));
+
 		std::ofstream file;
-		file.open(resource_path + "../depth_scale.cfg", std::ios::app);
-		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale()) + "\n";
+		file.open(resource_path + "camera_properties.csv", std::ios::app);
+		file << camera->SerialNumber() + "," + std::to_string(camera->MeterScale()) +
+			+ "," + intrin_string + "\n";
 		file.close();
 
 		std::string mkdir_ir_cmd = "mkdir " + resource_path +
@@ -104,21 +95,23 @@ int main(int argc, char** argv) {
 				Util::writeToFile(resource_path + "cTch_" + camera->SerialNumber() + ".csv", board_pose, i);
 
 				cv::imshow("Detection", colorized_image);
+				std::cout << "Press any key to capture with next camera" << std::endl;
 				cv::waitKey(0);
 			}
 		}
 
-		std::string franka_cmd = "./devel/lib/camera_calibration_panda/collect-pose " +
+		std::string franka_cmd = root_path + "build/collect-pose " +
 			resource_path + " " + ROBOT_IP + " " + std::to_string(i);
+
 		system(franka_cmd.c_str());
 
 		i++;
 
-		std::cout << "Press any key to continue" << std::endl;
+		std::cout << "Move the robot and press any key" << std::endl;
 		cv::waitKey(0);
 
 		/*
-		std::cout << "Press any key to continue" << std::endl;
+		std::cout << "Move the robot and press any key" << std::endl;
 		std::cin.ignore();
 		*/
 	}

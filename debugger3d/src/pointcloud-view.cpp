@@ -2,7 +2,8 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <string>
-#include <Eigen/Core>
+// #include <Eigen/Core>
+#include <eigen3/Eigen/Core>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <camerasensor.hpp>
@@ -23,6 +24,13 @@ typedef struct PointCloud {
 	Shader* shader;
 	glm::mat4 pose;
 } PointCloud;
+
+static glm::vec3 COLORS[] = {
+
+    glm::vec3(0.8f, 0.2f, 0.2f),
+    glm::vec3(0.2f, 0.8f, 0.2f),
+    glm::vec3(0.2f, 0.2f, 0.8f),
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 void renderPointCloud(void* entity, RenderInfo* rinfo) {
@@ -46,7 +54,8 @@ void renderPointCloud(void* entity, RenderInfo* rinfo) {
 ////////////////////////////////////////////////////////////////////////////////
 RenderBundle* setupForRendering(PointCloud* pcloud, std::vector<Vertex>* vertices) {
 	
-	pcloud->glarray = glarray_create(&(*vertices)[0], vertices->size(), "p,c");
+    const char* layout = "p,c";
+	pcloud->glarray = glarray_create(&(*vertices)[0], vertices->size(), (char*) layout);
 
     pcloud->shader = new Shader("src/shaders/pointcloud",
         ShaderAttributes::PCLOUD_ATTRIBUTES);
@@ -142,11 +151,15 @@ int main(int argc, char** argv) {
     RenderBundle* rbundle_cf_orig = coordframe_create_renderbundle(cf_orig);
     visualization_submit_for_rendering(rbundle_cf_orig);
 
+	std::string root_dir = Util::getRootPath();
+
 	std::string res_path_prefix =
-		"../res/calib-dataset5/";
+		root_dir + "res/" + std::string(argv[1]) + "/";
 		// "/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
     std::vector<PointCloud*> pclouds;
+
+    uint8_t color_idx = 0;
 
 	CameraSensor::Initialize();
     {
@@ -157,7 +170,7 @@ int main(int argc, char** argv) {
             cv::Mat depth = cv::imread(
                 // res_path_prefix + "verification-custom-camera-settings/ver-images-depth-" +
                 res_path_prefix + "calib-images-depth-" +
-                serial + "/depth7.png",
+                serial + "/depth0.png",
                 cv::IMREAD_UNCHANGED
             );
 
@@ -167,10 +180,7 @@ int main(int argc, char** argv) {
             Util::printCvMat(cv_pose);
             glm::mat4 pose = cvMatToGlm(&cv_pose);
 
-            glm::vec3 color = glm::vec3(0.8f, 0.2f, 0.2f);
-
-            if (camera->SerialNumber() == "810512060827")
-                color = glm::vec3(0.2f, 0.8f, 0.2f);
+            glm::vec3 color = COLORS[color_idx++];
 
             std::vector<Vertex> points = depthImageToPointCloud(&depth, camera, color);
 

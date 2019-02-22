@@ -81,12 +81,17 @@ void CameraSensor::SetupStreams() {
 			intrinsics_[RS2_STREAM_INFRARED] = GetIntrinsics("ir");
 			dist_coeffs_[RS2_STREAM_INFRARED] = GetDistortionCoeffs("ir");
 			
-			/*
 			auto sensor = device_.first<rs2::depth_sensor>();
+
+			// Settings for D400 series
+			/*
 			sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 0);
 			sensor.set_option(RS2_OPTION_EXPOSURE, 90000.0f);
 			sensor.set_option(RS2_OPTION_GAIN, 16.0f);
 			*/
+
+			// Settings for SR300 series
+			sensor.set_option(RS2_OPTION_VISUAL_PRESET, RS2_SR300_VISUAL_PRESET_IR_ONLY);
 		}
 
 		if (StreamIsActive(RS2_STREAM_COLOR, &pipeline_profile_)) {

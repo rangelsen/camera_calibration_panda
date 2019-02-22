@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "camerasensor.hpp"
-#include <librealsense2/rs_option.h>
+// #include <librealsense2/rs_option.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 std::vector<CameraSensor*> CameraSensor::connected_devices = std::vector<CameraSensor*>();

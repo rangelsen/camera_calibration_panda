@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <unistd.h>
 
 #include "util.hpp"
 
@@ -212,6 +213,53 @@ std::vector<float> Util::splitf(std::string str, std::string delim) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector<std::string> Util::split(std::string& str, char delim) {
+
+    std::vector<std::string> result;
+    std::stringstream ss(str);
+    std::string item;
+
+    while (std::getline(ss, item, delim)) {
+
+        result.push_back(item);
+	}
+
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Util::CalibConfig Util::readConfig(std::string filename) {
+
+	CalibConfig config;
+
+	std::ifstream input_file(filename.c_str());
+	std::string line;
+
+	while(getline(input_file, line)) {
+		
+		std::string::iterator end_pos = std::remove(line.begin(),
+													line.end(), ' ');
+		line.erase(end_pos, line.end());
+		std::vector<std::string> tokens = Util::split(line, '=');
+
+		if(tokens[0] == "CURRENT_RIG_NAME") {
+
+			config.rig_name = tokens[1];
+		}
+	}
+
+	return config;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Util::getRootPath() {
+
+	char cwd_buf[1024];
+	getcwd(cwd_buf, 1024);
+	strcat(cwd_buf, "/../");
+
+	return std::string(cwd_buf);
+}
 
 /// @file
 

@@ -6,21 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/Documents/camera_calibration_panda/src/calibration.cpp
+/home/marolab/camera_calibration_panda/src/calibration.cpp
 iostream
 -
 calibration.hpp
-/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/camera_calibration_panda/src/calibration.hpp
 
-/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/camera_calibration_panda/src/calibration.hpp
 opencv2/core/core.hpp
 -
 opencv2/aruco/charuco.hpp
 -
 camerasensor.hpp
-/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/camera_calibration_panda/src/camerasensor.hpp
 
-/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/marolab/Documents/camera_calibration_panda
+CMAKE_SOURCE_DIR = /home/marolab/camera_calibration_panda
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/marolab/Documents/camera_calibration_panda/build
+CMAKE_BINARY_DIR = /home/marolab/camera_calibration_panda/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/calibration.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/calibration.dir/flags.make
 
 CMakeFiles/calibration.dir/src/calibration.cpp.o: CMakeFiles/calibration.dir/flags.make
 CMakeFiles/calibration.dir/src/calibration.cpp.o: ../src/calibration.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marolab/Documents/camera_calibration_panda/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/calibration.dir/src/calibration.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/calibration.dir/src/calibration.cpp.o -c /home/marolab/Documents/camera_calibration_panda/src/calibration.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marolab/camera_calibration_panda/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/calibration.dir/src/calibration.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/calibration.dir/src/calibration.cpp.o -c /home/marolab/camera_calibration_panda/src/calibration.cpp
 
 CMakeFiles/calibration.dir/src/calibration.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/calibration.dir/src/calibration.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marolab/Documents/camera_calibration_panda/src/calibration.cpp > CMakeFiles/calibration.dir/src/calibration.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marolab/camera_calibration_panda/src/calibration.cpp > CMakeFiles/calibration.dir/src/calibration.cpp.i
 
 CMakeFiles/calibration.dir/src/calibration.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/calibration.dir/src/calibration.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marolab/Documents/camera_calibration_panda/src/calibration.cpp -o CMakeFiles/calibration.dir/src/calibration.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marolab/camera_calibration_panda/src/calibration.cpp -o CMakeFiles/calibration.dir/src/calibration.cpp.s
 
 CMakeFiles/calibration.dir/src/calibration.cpp.o.requires:
 
@@ -91,7 +91,7 @@ calibration_EXTERNAL_OBJECTS =
 libcalibration.a: CMakeFiles/calibration.dir/src/calibration.cpp.o
 libcalibration.a: CMakeFiles/calibration.dir/build.make
 libcalibration.a: CMakeFiles/calibration.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marolab/Documents/camera_calibration_panda/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcalibration.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marolab/camera_calibration_panda/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcalibration.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/calibration.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/calibration.dir/link.txt --verbose=$(VERBOSE)
 
@@ -109,6 +109,6 @@ CMakeFiles/calibration.dir/clean:
 .PHONY : CMakeFiles/calibration.dir/clean
 
 CMakeFiles/calibration.dir/depend:
-	cd /home/marolab/Documents/camera_calibration_panda/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marolab/Documents/camera_calibration_panda /home/marolab/Documents/camera_calibration_panda /home/marolab/Documents/camera_calibration_panda/build /home/marolab/Documents/camera_calibration_panda/build /home/marolab/Documents/camera_calibration_panda/build/CMakeFiles/calibration.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/marolab/camera_calibration_panda/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marolab/camera_calibration_panda /home/marolab/camera_calibration_panda /home/marolab/camera_calibration_panda/build /home/marolab/camera_calibration_panda/build /home/marolab/camera_calibration_panda/build/CMakeFiles/calibration.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/calibration.dir/depend
 

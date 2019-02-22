@@ -14,11 +14,10 @@ static const std::vector<std::string> CAMERA_SERIALS {
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	std::string local_work_dir =
-		"/home/mrgribbot/catkin_ws/src/camera_calibration_panda/";
+	std::string local_work_dir = Util::getRootPath();
 
 	std::string local_res = local_work_dir + "res/";
-	std::string resource_path_prefix = local_res + "calib-dataset5/";
+	std::string resource_path_prefix = local_res + std::string(argv[1]) + "/";
 	
 	/*
 	{ // Index board poses that are visible from the camera

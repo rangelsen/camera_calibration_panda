@@ -1,7 +1,8 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
-#include <Eigen/Eigen>
+// #include <Eigen/Eigen>
+#include <eigen3/Eigen/Eigen>
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>

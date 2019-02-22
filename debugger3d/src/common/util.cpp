@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <unistd.h>
 
 #include "util.hpp"
 
@@ -72,6 +73,8 @@ bool Util::getUserPosition(double* x, double* y, double* z, bool *exit) {
 
         return true;
     }
+    
+    return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -125,9 +128,9 @@ void Util::printCvMat(cv::Mat mat) {
 
 	std::cout << "cv::Mat" << std::endl;
 
-	for (uint32_t i = 0; i < mat.rows; i++) {
+	for (int i = 0; i < mat.rows; i++) {
 
-		for (uint32_t j = 0; j < mat.cols; j++)
+		for (int j = 0; j < mat.cols; j++)
 			std::cout << std::setprecision(6) << mat.at<double>(i, j) << " ";
 
 		std::cout << std::endl;
@@ -212,6 +215,14 @@ std::vector<float> Util::splitf(std::string str, std::string delim) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Util::getRootPath() {
+
+	char cwd_buf[1024];
+	getcwd(cwd_buf, 1024);
+	strcat(cwd_buf, "/../");
+
+	return std::string(cwd_buf);
+}
 
 /// @file
 

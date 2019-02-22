@@ -6,12 +6,16 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/Documents/camera_calibration_panda/src/calib_manual.cpp
+/home/marolab/camera_calibration_panda/src/calib_manual.cpp
 iostream
 -
 string
 -
 fstream
+-
+unistd.h
+-
+cassert
 -
 opencv2/core/core.hpp
 -
@@ -20,11 +24,11 @@ opencv2/highgui/highgui.hpp
 opencv2/aruco/charuco.hpp
 -
 util.hpp
-/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/camera_calibration_panda/src/util.hpp
 camerasensor.hpp
-/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/camera_calibration_panda/src/camerasensor.hpp
 calibration.hpp
-/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/camera_calibration_panda/src/calibration.hpp
 franka/robot.h
 -
 franka/model.h
@@ -32,15 +36,15 @@ franka/model.h
 eigen3/Eigen/Core
 -
 
-/home/marolab/Documents/camera_calibration_panda/src/calibration.hpp
+/home/marolab/camera_calibration_panda/src/calibration.hpp
 opencv2/core/core.hpp
 -
 opencv2/aruco/charuco.hpp
 -
 camerasensor.hpp
-/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/camera_calibration_panda/src/camerasensor.hpp
 
-/home/marolab/Documents/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h
@@ -56,7 +60,7 @@ pcl/point_types.h
 pcl/point_cloud.h
 -
 
-/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/camera_calibration_panda/src/util.hpp
 eigen3/Eigen/Geometry
 -
 opencv2/core/core.hpp

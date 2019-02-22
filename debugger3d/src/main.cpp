@@ -3,7 +3,8 @@
 #include <stddef.h>
 #include <cmath>
 
-#include <Eigen/Eigen>
+// #include <Eigen/Eigen>
+#include <eigen3/Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>

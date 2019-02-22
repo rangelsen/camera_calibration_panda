@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/Documents/camera_calibration_panda/src/pose-collection.cpp
+/home/marolab/camera_calibration_panda/src/pose-collection.cpp
 iostream
 -
 string
@@ -20,9 +20,9 @@ franka/model.h
 stdio.h
 -
 util.hpp
-/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/camera_calibration_panda/src/util.hpp
 
-/home/marolab/Documents/camera_calibration_panda/src/util.hpp
+/home/marolab/camera_calibration_panda/src/util.hpp
 eigen3/Eigen/Geometry
 -
 opencv2/core/core.hpp

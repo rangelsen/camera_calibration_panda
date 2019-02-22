@@ -2,16 +2,10 @@
 
 function estimate_camera_pose()
 
-	disp("octave");
+	serial_number = argv(){1};
 	res_path_prefix = "";
-	cTch_path = argv(){1};
-
-	% res_path_prefix = "/home/mrgribbot/catkin_ws/camera_calibration_panda/res/calib-dataset3/";
-	% res_path_prefix = "";
-	% cTch_path = "cTch_810512060827.csv";
-
-	disp(res_path_prefix);
-	disp(cTch_path);
+	cTch_path = strcat("cTch_", serial_number);
+	cTch_path = strcat(cTch_path, ".csv");
 
 	board_poses 	  = csvread(strcat(res_path_prefix, cTch_path));
 	endeffector_poses = csvread(strcat(res_path_prefix, "bTe.csv"));
@@ -37,15 +31,17 @@ function estimate_camera_pose()
 		BB(:, start_col:(start_col + 3)) = B;
 	end
 
-	% cTb = andreff(AA, BB);
-	cTb = park(AA, BB);
+	cTb = andreff(AA, BB)
+	cTb = park(AA, BB)
 	% cTb = daniilidis(AA, BB);
 
 	bTc= inv(cTb)
 
 	flat_pose = flatten_pose(bTc);
 
-	csvwrite(strcat(res_path_prefix, "bTc.csv"), flat_pose);
+	output_file = strcat("bTc_", serial_number);
+	output_file = strcat(output_file, ".csv");
+	csvwrite(strcat(res_path_prefix, output_file), flat_pose);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
