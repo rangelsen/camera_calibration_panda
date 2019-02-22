@@ -130,10 +130,6 @@ int main(int argc, char** argv) {
 
 	Display* display = new Display();
 
-	glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_PROGRAM_POINT_SIZE);
-	glLineWidth(100.0f);
-
 	Camera* vcamera = new Camera(glm::vec3(0.0f, 0.5f, 0.0f), 0.0f, 0.0f);
 	
 	Grid* grid = grid_create(-2.0f, -2.0f, 4.0f, 4.0f);
@@ -155,7 +151,6 @@ int main(int argc, char** argv) {
 
 	std::string res_path_prefix =
 		root_dir + "res/" + std::string(argv[1]) + "/";
-		// "/home/mrgribbot/catkin_ws/src/camera_calibration_panda/res/calib-dataset5/";
 
     std::vector<PointCloud*> pclouds;
 
@@ -168,7 +163,6 @@ int main(int argc, char** argv) {
             std::string serial = camera->SerialNumber();
 
             cv::Mat depth = cv::imread(
-                // res_path_prefix + "verification-custom-camera-settings/ver-images-depth-" +
                 res_path_prefix + "calib-images-depth-" +
                 serial + "/depth0.png",
                 cv::IMREAD_UNCHANGED

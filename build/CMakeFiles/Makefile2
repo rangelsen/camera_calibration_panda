@@ -176,9 +176,9 @@ clean: CMakeFiles/util.dir/clean
 # Target rules for target CMakeFiles/verification.dir
 
 # All Build rule for target.
+CMakeFiles/verification.dir/all: CMakeFiles/calibration.dir/all
 CMakeFiles/verification.dir/all: CMakeFiles/util.dir/all
 CMakeFiles/verification.dir/all: CMakeFiles/camera.dir/all
-CMakeFiles/verification.dir/all: CMakeFiles/calibration.dir/all
 	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/depend
 	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/camera_calibration_panda/build/CMakeFiles --progress-num=13,14 "Built target verification"
@@ -215,9 +215,9 @@ clean: CMakeFiles/verification.dir/clean
 # Target rules for target CMakeFiles/calib_manual.dir
 
 # All Build rule for target.
+CMakeFiles/calib_manual.dir/all: CMakeFiles/calibration.dir/all
 CMakeFiles/calib_manual.dir/all: CMakeFiles/util.dir/all
 CMakeFiles/calib_manual.dir/all: CMakeFiles/camera.dir/all
-CMakeFiles/calib_manual.dir/all: CMakeFiles/calibration.dir/all
 	$(MAKE) -f CMakeFiles/calib_manual.dir/build.make CMakeFiles/calib_manual.dir/depend
 	$(MAKE) -f CMakeFiles/calib_manual.dir/build.make CMakeFiles/calib_manual.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/camera_calibration_panda/build/CMakeFiles --progress-num=1,2 "Built target calib_manual"

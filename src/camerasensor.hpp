@@ -6,6 +6,8 @@
 #include <eigen3/Eigen/Eigen>
 #include <glm/glm.hpp>
 #include <opencv2/opencv.hpp>
+#include <map>
+
 /*
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
@@ -23,6 +25,8 @@ public:
 	static void Initialize();
 
 	static void Destroy();
+
+    static std::map<CameraSensor*, cv::Mat*> CaptureDepthAll();
 
     void AcquireColorImage(cv::Mat* image);
 
@@ -90,6 +94,8 @@ public:
 	*/
 
 	cv::Mat GetIntrinsics(std::string stream_type);
+
+    void SetEmitter(float power);
 
 private:
     void ActivateStream(rs2_stream stream, rs2::config* config);

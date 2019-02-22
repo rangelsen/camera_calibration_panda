@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "camerasensor.hpp"
 
@@ -91,7 +92,7 @@ void CameraSensor::SetupStreams() {
 			*/
 
 			// Settings for SR300 series
-			sensor.set_option(RS2_OPTION_VISUAL_PRESET, RS2_SR300_VISUAL_PRESET_IR_ONLY);
+			// sensor.set_option(RS2_OPTION_VISUAL_PRESET, RS2_SR300_VISUAL_PRESET_IR_ONLY);
 		}
 
 		if (StreamIsActive(RS2_STREAM_COLOR, &pipeline_profile_)) {
@@ -132,6 +133,7 @@ void CameraSensor::Initialize() {
 
 			CameraSensor* camera = new CameraSensor(device);
 			connected_devices.push_back(camera);
+            camera->SetEmitter(0.0f);
         }
     }
 }
@@ -156,10 +158,14 @@ rs2::frameset CameraSensor::Capture() {
 void CameraSensor::CaptureDepth(cv::Mat* image) {
 
     // Warmup(&pipeline_, 10);
+    SetEmitter(16.0f);
+
     rs2::depth_frame frame = Capture().first(RS2_STREAM_DEPTH).as<rs2::depth_frame>();
 
     *image = cv::Mat(cv::Size(frame.get_width(), frame.get_height()),
                      CV_16UC1, (void*) frame.get_data());
+    
+    SetEmitter(0.0f);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -170,6 +176,35 @@ void CameraSensor::CaptureIr(cv::Mat* image) {
 
     *image = cv::Mat(cv::Size(vframe.get_width(), vframe.get_height()),
                      CV_8UC1, (void*) vframe.get_data());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::map<CameraSensor*, cv::Mat*> CameraSensor::CaptureDepthAll() {
+
+    // Turn off emitter on all cameras
+    for (CameraSensor* camera : connected_devices) {
+
+        auto sensor = camera->Device().first<rs2::depth_sensor>();
+        sensor.set_option(RS2_OPTION_LASER_POWER, 0.0f);
+    }
+
+    std::map<CameraSensor*, cv::Mat*> images;
+
+    // Turn on emitter, capture, turn off emitter for each camera
+    for (CameraSensor* camera : connected_devices) {
+
+        auto sensor = camera->Device().first<rs2::depth_sensor>();
+        sensor.set_option(RS2_OPTION_LASER_POWER, 16.0f);
+
+        cv::Mat* image = new cv::Mat();
+        camera->CaptureDepth(image);
+
+        images[camera] = image;
+
+        sensor.set_option(RS2_OPTION_LASER_POWER, 0.0f);
+    }
+
+    return images;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -483,6 +518,16 @@ rs2::device CameraSensor::Device() {
 std::string CameraSensor::SerialNumber() {
 
 	return GetSerialNumber(device_);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void CameraSensor::SetEmitter(float power) {
+
+    auto sensor = device_.first<rs2::depth_sensor>();
+    sensor.set_option(RS2_OPTION_LASER_POWER, power);
+
+    for (uint8_t i = 0; i < 50; i++)
+        Capture();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

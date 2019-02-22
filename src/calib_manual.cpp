@@ -69,9 +69,13 @@ int main(int argc, char** argv) {
 
 		for (CameraSensor* camera : CameraSensor::connected_devices) {
 
-			camera->CaptureIr(&ir_image);
+			// camera->CaptureIr(&ir_image);
 			camera->CaptureDepth(&depth_image);
-			camera->CaptureRgb(&rgb_image);
+			// camera->CaptureRgb(&rgb_image);
+
+            std::cout << "Captured " << depth_image.cols << ", " << depth_image.rows << std::endl;
+            cv::imshow("Depth", depth_image);
+            cv::waitKey(0);
 
 			cv::cvtColor(ir_image, colorized_image, cv::COLOR_GRAY2RGB);
 
