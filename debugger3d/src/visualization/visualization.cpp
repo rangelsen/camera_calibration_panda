@@ -1,7 +1,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include <common/Utility.hpp>
+#include <common/utility.hpp>
 
 #include "visualization.hpp"
 

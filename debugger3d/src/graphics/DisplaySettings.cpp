@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "DisplaySettings.hpp"
-#include "common/StringUtility.hpp"
+#include "common/stringutility.hpp"
 
 namespace DisplaySettings {
 

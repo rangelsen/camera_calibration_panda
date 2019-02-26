@@ -1,2 +1,2 @@
-include_rules
+include ../../debugger3d.tup
 : foreach *.cpp |> !cc |> $(BUILD_DIR)/%B.o $(ROOT_DIR)/<%d>

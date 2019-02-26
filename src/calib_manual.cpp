@@ -6,7 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/aruco/charuco.hpp>
-#include "util.hpp"
+#include <common/utility.hpp>
 
 #include "camerasensor.hpp"
 #include "calibration.hpp"

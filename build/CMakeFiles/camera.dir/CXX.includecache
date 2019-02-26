@@ -6,15 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/camera_calibration_panda/src/camerasensor.cpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.cpp
 iostream
 -
 unistd.h
 -
 camerasensor.hpp
-/home/marolab/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.hpp
 
-/home/marolab/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h

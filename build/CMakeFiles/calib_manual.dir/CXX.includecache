@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/camera_calibration_panda/src/calib_manual.cpp
+../../common/utility.hpp
+eigen3/Eigen/Geometry
+-
+opencv2/core/core.hpp
+-
+string
+-
+
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/calib_manual.cpp
 iostream
 -
 string
@@ -23,12 +31,12 @@ opencv2/highgui/highgui.hpp
 -
 opencv2/aruco/charuco.hpp
 -
-util.hpp
-/home/marolab/camera_calibration_panda/src/util.hpp
+common/utility.hpp
+-
 camerasensor.hpp
-/home/marolab/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.hpp
 calibration.hpp
-/home/marolab/camera_calibration_panda/src/calibration.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/calibration.hpp
 franka/robot.h
 -
 franka/model.h
@@ -36,15 +44,15 @@ franka/model.h
 eigen3/Eigen/Core
 -
 
-/home/marolab/camera_calibration_panda/src/calibration.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/calibration.hpp
 opencv2/core/core.hpp
 -
 opencv2/aruco/charuco.hpp
 -
 camerasensor.hpp
-/home/marolab/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.hpp
 
-/home/marolab/camera_calibration_panda/src/camerasensor.hpp
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/camerasensor.hpp
 librealsense2/rs.hpp
 -
 librealsense2/rsutil.h
@@ -60,14 +68,6 @@ map
 pcl/point_types.h
 -
 pcl/point_cloud.h
--
-
-/home/marolab/camera_calibration_panda/src/util.hpp
-eigen3/Eigen/Geometry
--
-opencv2/core/core.hpp
--
-string
 -
 
 /usr/local/include/eigen3/Eigen/Cholesky
@@ -2617,6 +2617,22 @@ opencv2/core.hpp
 /usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
 opencv2/opencv_modules.hpp
 /usr/local/include/opencv2/stitching/detail/opencv2/opencv_modules.hpp
+
+/usr/local/include/opencv2/stitching/detail/util.hpp
+list
+-
+opencv2/core.hpp
+/usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
+util_inl.hpp
+/usr/local/include/opencv2/stitching/detail/util_inl.hpp
+
+/usr/local/include/opencv2/stitching/detail/util_inl.hpp
+queue
+-
+opencv2/core.hpp
+/usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
+util.hpp
+/usr/local/include/opencv2/stitching/detail/util.hpp
 
 /usr/local/include/opencv2/stitching/detail/warpers.hpp
 opencv2/core.hpp

@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/marolab/camera_calibration_panda/src/pose-collection.cpp
+../../common/utility.hpp
+eigen3/Eigen/Geometry
+-
+opencv2/core/core.hpp
+-
+string
+-
+
+/home/marolab/voxelspacereconstruction/camera_calibration_panda/src/pose-collection.cpp
 iostream
 -
 string
@@ -19,15 +27,7 @@ franka/model.h
 -
 stdio.h
 -
-util.hpp
-/home/marolab/camera_calibration_panda/src/util.hpp
-
-/home/marolab/camera_calibration_panda/src/util.hpp
-eigen3/Eigen/Geometry
--
-opencv2/core/core.hpp
--
-string
+common/utility.hpp
 -
 
 /usr/local/include/eigen3/Eigen/Cholesky
@@ -2075,6 +2075,22 @@ opencv2/core.hpp
 /usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
 opencv2/opencv_modules.hpp
 /usr/local/include/opencv2/stitching/detail/opencv2/opencv_modules.hpp
+
+/usr/local/include/opencv2/stitching/detail/util.hpp
+list
+-
+opencv2/core.hpp
+/usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
+util_inl.hpp
+/usr/local/include/opencv2/stitching/detail/util_inl.hpp
+
+/usr/local/include/opencv2/stitching/detail/util_inl.hpp
+queue
+-
+opencv2/core.hpp
+/usr/local/include/opencv2/stitching/detail/opencv2/core.hpp
+util.hpp
+/usr/local/include/opencv2/stitching/detail/util.hpp
 
 /usr/local/include/opencv2/stitching/detail/warpers.hpp
 opencv2/core.hpp

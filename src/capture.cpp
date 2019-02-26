@@ -3,7 +3,7 @@
 #include <fstream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include "util.hpp"
+#include <common/utility.hpp>
 
 #include "camerasensor.hpp"
 #include <eigen3/Eigen/Core>

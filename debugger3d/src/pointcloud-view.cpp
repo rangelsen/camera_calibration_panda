@@ -2,7 +2,6 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <string>
-// #include <Eigen/Core>
 #include <eigen3/Eigen/Core>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,7 +14,7 @@
 #include <input/InputHandler.hpp>
 #include <graphics/Shader.hpp>
 #include <graphics/ShaderAttributes.hpp>
-#include <common/util.hpp>
+#include <common/utility.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct PointCloud {

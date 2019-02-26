@@ -4,7 +4,7 @@
 #include <franka/robot.h>
 #include <franka/model.h>
 #include <stdio.h>
-#include "util.hpp"
+#include <common/utility.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 void print_pose(std::array<double, 16> pose) {

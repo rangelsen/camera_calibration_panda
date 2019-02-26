@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/marolab/camera_calibration_panda
+CMAKE_SOURCE_DIR = /home/marolab/voxelspacereconstruction/camera_calibration_panda
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/marolab/camera_calibration_panda/build
+CMAKE_BINARY_DIR = /home/marolab/voxelspacereconstruction/camera_calibration_panda/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/camera_calibration_panda/build/CMakeFiles /home/marolab/camera_calibration_panda/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/camera_calibration_panda/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,45 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named capture
-
-# Build rule for target.
-capture: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 capture
-.PHONY : capture
-
-# fast build rule for target.
-capture/fast:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/build
-.PHONY : capture/fast
-
-#=============================================================================
-# Target rules for targets named calibration
-
-# Build rule for target.
-calibration: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 calibration
-.PHONY : calibration
-
-# fast build rule for target.
-calibration/fast:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
-.PHONY : calibration/fast
-
-#=============================================================================
-# Target rules for targets named util
-
-# Build rule for target.
-util: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 util
-.PHONY : util
-
-# fast build rule for target.
-util/fast:
-	$(MAKE) -f CMakeFiles/util.dir/build.make CMakeFiles/util.dir/build
-.PHONY : util/fast
-
-#=============================================================================
 # Target rules for targets named verification
 
 # Build rule for target.
@@ -174,6 +135,32 @@ calib_manual: cmake_check_build_system
 calib_manual/fast:
 	$(MAKE) -f CMakeFiles/calib_manual.dir/build.make CMakeFiles/calib_manual.dir/build
 .PHONY : calib_manual/fast
+
+#=============================================================================
+# Target rules for targets named calibration
+
+# Build rule for target.
+calibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 calibration
+.PHONY : calibration
+
+# fast build rule for target.
+calibration/fast:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
+.PHONY : calibration/fast
+
+#=============================================================================
+# Target rules for targets named capture
+
+# Build rule for target.
+capture: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 capture
+.PHONY : capture
+
+# fast build rule for target.
+capture/fast:
+	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/build
+.PHONY : capture/fast
 
 #=============================================================================
 # Target rules for targets named camera
@@ -336,33 +323,6 @@ src/pose-collection.cpp.s:
 	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/src/pose-collection.cpp.s
 .PHONY : src/pose-collection.cpp.s
 
-src/util.o: src/util.cpp.o
-
-.PHONY : src/util.o
-
-# target to build an object file
-src/util.cpp.o:
-	$(MAKE) -f CMakeFiles/util.dir/build.make CMakeFiles/util.dir/src/util.cpp.o
-.PHONY : src/util.cpp.o
-
-src/util.i: src/util.cpp.i
-
-.PHONY : src/util.i
-
-# target to preprocess a source file
-src/util.cpp.i:
-	$(MAKE) -f CMakeFiles/util.dir/build.make CMakeFiles/util.dir/src/util.cpp.i
-.PHONY : src/util.cpp.i
-
-src/util.s: src/util.cpp.s
-
-.PHONY : src/util.s
-
-# target to generate assembly for a file
-src/util.cpp.s:
-	$(MAKE) -f CMakeFiles/util.dir/build.make CMakeFiles/util.dir/src/util.cpp.s
-.PHONY : src/util.cpp.s
-
 src/verification.o: src/verification.cpp.o
 
 .PHONY : src/verification.o
@@ -397,12 +357,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... capture"
-	@echo "... calibration"
-	@echo "... util"
 	@echo "... edit_cache"
 	@echo "... verification"
 	@echo "... calib_manual"
+	@echo "... calibration"
+	@echo "... capture"
 	@echo "... camera"
 	@echo "... collect-pose"
 	@echo "... src/calib_manual.o"
@@ -420,9 +379,6 @@ help:
 	@echo "... src/pose-collection.o"
 	@echo "... src/pose-collection.i"
 	@echo "... src/pose-collection.s"
-	@echo "... src/util.o"
-	@echo "... src/util.i"
-	@echo "... src/util.s"
 	@echo "... src/verification.o"
 	@echo "... src/verification.i"
 	@echo "... src/verification.s"
