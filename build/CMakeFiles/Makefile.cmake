@@ -21,6 +21,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/OpenCV/OpenCVConfig.cmake"
   "/usr/local/share/OpenCV/OpenCVModules-release.cmake"
   "/usr/local/share/OpenCV/OpenCVModules.cmake"
+  "/usr/local/share/pcl-1.9/Modules/FindEigen.cmake"
+  "/usr/local/share/pcl-1.9/PCLConfig.cmake"
+  "/usr/local/share/pcl-1.9/PCLConfigVersion.cmake"
   "/usr/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in"
   "/usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c"
   "/usr/share/cmake-3.10/Modules/CMakeCInformation.cmake"
@@ -101,8 +104,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.10/Modules/Compiler/XL-CXX-DetermineCompiler.cmake"
   "/usr/share/cmake-3.10/Modules/Compiler/zOS-C-DetermineCompiler.cmake"
   "/usr/share/cmake-3.10/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake"
+  "/usr/share/cmake-3.10/Modules/FindBoost.cmake"
   "/usr/share/cmake-3.10/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.10/Modules/FindPackageMessage.cmake"
+  "/usr/share/cmake-3.10/Modules/FindPkgConfig.cmake"
   "/usr/share/cmake-3.10/Modules/FindThreads.cmake"
   "/usr/share/cmake-3.10/Modules/Internal/FeatureTesting.cmake"
   "/usr/share/cmake-3.10/Modules/Platform/Linux-Determine-CXX.cmake"
@@ -131,10 +136,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/verification.dir/DependInfo.cmake"
   "CMakeFiles/calib_manual.dir/DependInfo.cmake"
   "CMakeFiles/calibration.dir/DependInfo.cmake"
-  "CMakeFiles/capture.dir/DependInfo.cmake"
-  "CMakeFiles/camera.dir/DependInfo.cmake"
-  "CMakeFiles/collect-pose.dir/DependInfo.cmake"
+  "CMakeFiles/rswrapper.dir/DependInfo.cmake"
   )

@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/marolab/voxelspacereconstruction/camera_calibration_pan
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named verification
-
-# Build rule for target.
-verification: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 verification
-.PHONY : verification
-
-# fast build rule for target.
-verification/fast:
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/build
-.PHONY : verification/fast
-
-#=============================================================================
 # Target rules for targets named calib_manual
 
 # Build rule for target.
@@ -150,43 +137,44 @@ calibration/fast:
 .PHONY : calibration/fast
 
 #=============================================================================
-# Target rules for targets named capture
+# Target rules for targets named rswrapper
 
 # Build rule for target.
-capture: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 capture
-.PHONY : capture
+rswrapper: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rswrapper
+.PHONY : rswrapper
 
 # fast build rule for target.
-capture/fast:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/build
-.PHONY : capture/fast
+rswrapper/fast:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/build
+.PHONY : rswrapper/fast
 
-#=============================================================================
-# Target rules for targets named camera
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.o: home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.o
 
-# Build rule for target.
-camera: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 camera
-.PHONY : camera
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.o
 
-# fast build rule for target.
-camera/fast:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/build
-.PHONY : camera/fast
+# target to build an object file
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.o:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.o
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.o
 
-#=============================================================================
-# Target rules for targets named collect-pose
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.i: home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.i
 
-# Build rule for target.
-collect-pose: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 collect-pose
-.PHONY : collect-pose
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.i
 
-# fast build rule for target.
-collect-pose/fast:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/build
-.PHONY : collect-pose/fast
+# target to preprocess a source file
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.i:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.i
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.i
+
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.s: home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.s
+
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.s
+
+# target to generate assembly for a file
+home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.s:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.s
+.PHONY : home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.cpp.s
 
 src/calib_manual.o: src/calib_manual.cpp.o
 
@@ -242,146 +230,26 @@ src/calibration.cpp.s:
 	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibration.cpp.s
 .PHONY : src/calibration.cpp.s
 
-src/camerasensor.o: src/camerasensor.cpp.o
-
-.PHONY : src/camerasensor.o
-
-# target to build an object file
-src/camerasensor.cpp.o:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/src/camerasensor.cpp.o
-.PHONY : src/camerasensor.cpp.o
-
-src/camerasensor.i: src/camerasensor.cpp.i
-
-.PHONY : src/camerasensor.i
-
-# target to preprocess a source file
-src/camerasensor.cpp.i:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/src/camerasensor.cpp.i
-.PHONY : src/camerasensor.cpp.i
-
-src/camerasensor.s: src/camerasensor.cpp.s
-
-.PHONY : src/camerasensor.s
-
-# target to generate assembly for a file
-src/camerasensor.cpp.s:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/src/camerasensor.cpp.s
-.PHONY : src/camerasensor.cpp.s
-
-src/capture.o: src/capture.cpp.o
-
-.PHONY : src/capture.o
-
-# target to build an object file
-src/capture.cpp.o:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture.cpp.o
-.PHONY : src/capture.cpp.o
-
-src/capture.i: src/capture.cpp.i
-
-.PHONY : src/capture.i
-
-# target to preprocess a source file
-src/capture.cpp.i:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture.cpp.i
-.PHONY : src/capture.cpp.i
-
-src/capture.s: src/capture.cpp.s
-
-.PHONY : src/capture.s
-
-# target to generate assembly for a file
-src/capture.cpp.s:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture.cpp.s
-.PHONY : src/capture.cpp.s
-
-src/pose-collection.o: src/pose-collection.cpp.o
-
-.PHONY : src/pose-collection.o
-
-# target to build an object file
-src/pose-collection.cpp.o:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/src/pose-collection.cpp.o
-.PHONY : src/pose-collection.cpp.o
-
-src/pose-collection.i: src/pose-collection.cpp.i
-
-.PHONY : src/pose-collection.i
-
-# target to preprocess a source file
-src/pose-collection.cpp.i:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/src/pose-collection.cpp.i
-.PHONY : src/pose-collection.cpp.i
-
-src/pose-collection.s: src/pose-collection.cpp.s
-
-.PHONY : src/pose-collection.s
-
-# target to generate assembly for a file
-src/pose-collection.cpp.s:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/src/pose-collection.cpp.s
-.PHONY : src/pose-collection.cpp.s
-
-src/verification.o: src/verification.cpp.o
-
-.PHONY : src/verification.o
-
-# target to build an object file
-src/verification.cpp.o:
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/src/verification.cpp.o
-.PHONY : src/verification.cpp.o
-
-src/verification.i: src/verification.cpp.i
-
-.PHONY : src/verification.i
-
-# target to preprocess a source file
-src/verification.cpp.i:
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/src/verification.cpp.i
-.PHONY : src/verification.cpp.i
-
-src/verification.s: src/verification.cpp.s
-
-.PHONY : src/verification.s
-
-# target to generate assembly for a file
-src/verification.cpp.s:
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/src/verification.cpp.s
-.PHONY : src/verification.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... verification"
 	@echo "... calib_manual"
 	@echo "... calibration"
-	@echo "... capture"
-	@echo "... camera"
-	@echo "... collect-pose"
+	@echo "... rebuild_cache"
+	@echo "... rswrapper"
+	@echo "... home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.o"
+	@echo "... home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.i"
+	@echo "... home/marolab/voxelspacereconstruction/rswrapper/src/camerasensor.s"
 	@echo "... src/calib_manual.o"
 	@echo "... src/calib_manual.i"
 	@echo "... src/calib_manual.s"
 	@echo "... src/calibration.o"
 	@echo "... src/calibration.i"
 	@echo "... src/calibration.s"
-	@echo "... src/camerasensor.o"
-	@echo "... src/camerasensor.i"
-	@echo "... src/camerasensor.s"
-	@echo "... src/capture.o"
-	@echo "... src/capture.i"
-	@echo "... src/capture.s"
-	@echo "... src/pose-collection.o"
-	@echo "... src/pose-collection.i"
-	@echo "... src/pose-collection.s"
-	@echo "... src/verification.o"
-	@echo "... src/verification.i"
-	@echo "... src/verification.s"
 .PHONY : help
 
 

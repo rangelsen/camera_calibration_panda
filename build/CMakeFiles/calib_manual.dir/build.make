@@ -90,11 +90,21 @@ calib_manual_EXTERNAL_OBJECTS =
 
 calib_manual: CMakeFiles/calib_manual.dir/src/calib_manual.cpp.o
 calib_manual: CMakeFiles/calib_manual.dir/build.make
-calib_manual: /usr/local/lib/libfranka.so.0.5.0
-calib_manual: libcamera.a
-calib_manual: libcalibration.a
-calib_manual: libcamera.a
 calib_manual: /usr/local/lib/libopencv_aruco.so.3.3.1
+calib_manual: /usr/local/lib/libfranka.so.0.5.0
+calib_manual: /usr/local/lib/libpcl_common.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_system.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_iostreams.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libboost_regex.so
+calib_manual: /usr/lib/x86_64-linux-gnu/libpthread.so
+calib_manual: librswrapper.a
+calib_manual: libcalibration.a
 calib_manual: /usr/local/lib/libopencv_calib3d.so.3.3.1
 calib_manual: /usr/local/lib/libopencv_features2d.so.3.3.1
 calib_manual: /usr/local/lib/libopencv_highgui.so.3.3.1

@@ -60,49 +60,11 @@ CMAKE_SOURCE_DIR = /home/marolab/voxelspacereconstruction/camera_calibration_pan
 CMAKE_BINARY_DIR = /home/marolab/voxelspacereconstruction/camera_calibration_panda/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/verification.dir
-
-# All Build rule for target.
-CMakeFiles/verification.dir/all: CMakeFiles/camera.dir/all
-CMakeFiles/verification.dir/all: CMakeFiles/calibration.dir/all
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/depend
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=11,12 "Built target verification"
-.PHONY : CMakeFiles/verification.dir/all
-
-# Include target in all.
-all: CMakeFiles/verification.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/verification.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 6
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/verification.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
-.PHONY : CMakeFiles/verification.dir/rule
-
-# Convenience name for target.
-verification: CMakeFiles/verification.dir/rule
-
-.PHONY : verification
-
-# clean rule for target.
-CMakeFiles/verification.dir/clean:
-	$(MAKE) -f CMakeFiles/verification.dir/build.make CMakeFiles/verification.dir/clean
-.PHONY : CMakeFiles/verification.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/verification.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/calib_manual.dir
 
 # All Build rule for target.
-CMakeFiles/calib_manual.dir/all: CMakeFiles/camera.dir/all
 CMakeFiles/calib_manual.dir/all: CMakeFiles/calibration.dir/all
+CMakeFiles/calib_manual.dir/all: CMakeFiles/rswrapper.dir/all
 	$(MAKE) -f CMakeFiles/calib_manual.dir/build.make CMakeFiles/calib_manual.dir/depend
 	$(MAKE) -f CMakeFiles/calib_manual.dir/build.make CMakeFiles/calib_manual.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=1,2 "Built target calib_manual"
@@ -139,7 +101,7 @@ clean: CMakeFiles/calib_manual.dir/clean
 # Target rules for target CMakeFiles/calibration.dir
 
 # All Build rule for target.
-CMakeFiles/calibration.dir/all: CMakeFiles/camera.dir/all
+CMakeFiles/calibration.dir/all:
 	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/depend
 	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=3,4 "Built target calibration"
@@ -152,7 +114,7 @@ all: CMakeFiles/calibration.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/calibration.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/calibration.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
 .PHONY : CMakeFiles/calibration.dir/rule
@@ -173,113 +135,39 @@ clean: CMakeFiles/calibration.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/capture.dir
+# Target rules for target CMakeFiles/rswrapper.dir
 
 # All Build rule for target.
-CMakeFiles/capture.dir/all: CMakeFiles/camera.dir/all
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/depend
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=7,8 "Built target capture"
-.PHONY : CMakeFiles/capture.dir/all
+CMakeFiles/rswrapper.dir/all:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/depend
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=5,6 "Built target rswrapper"
+.PHONY : CMakeFiles/rswrapper.dir/all
 
 # Include target in all.
-all: CMakeFiles/capture.dir/all
+all: CMakeFiles/rswrapper.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/capture.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/capture.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
-.PHONY : CMakeFiles/capture.dir/rule
-
-# Convenience name for target.
-capture: CMakeFiles/capture.dir/rule
-
-.PHONY : capture
-
-# clean rule for target.
-CMakeFiles/capture.dir/clean:
-	$(MAKE) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/clean
-.PHONY : CMakeFiles/capture.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/capture.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/camera.dir
-
-# All Build rule for target.
-CMakeFiles/camera.dir/all:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/depend
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=5,6 "Built target camera"
-.PHONY : CMakeFiles/camera.dir/all
-
-# Include target in all.
-all: CMakeFiles/camera.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/camera.dir/rule: cmake_check_build_system
+CMakeFiles/rswrapper.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/camera.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rswrapper.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
-.PHONY : CMakeFiles/camera.dir/rule
+.PHONY : CMakeFiles/rswrapper.dir/rule
 
 # Convenience name for target.
-camera: CMakeFiles/camera.dir/rule
+rswrapper: CMakeFiles/rswrapper.dir/rule
 
-.PHONY : camera
-
-# clean rule for target.
-CMakeFiles/camera.dir/clean:
-	$(MAKE) -f CMakeFiles/camera.dir/build.make CMakeFiles/camera.dir/clean
-.PHONY : CMakeFiles/camera.dir/clean
+.PHONY : rswrapper
 
 # clean rule for target.
-clean: CMakeFiles/camera.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/collect-pose.dir
-
-# All Build rule for target.
-CMakeFiles/collect-pose.dir/all:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/depend
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles --progress-num=9,10 "Built target collect-pose"
-.PHONY : CMakeFiles/collect-pose.dir/all
-
-# Include target in all.
-all: CMakeFiles/collect-pose.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/collect-pose.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/collect-pose.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles 0
-.PHONY : CMakeFiles/collect-pose.dir/rule
-
-# Convenience name for target.
-collect-pose: CMakeFiles/collect-pose.dir/rule
-
-.PHONY : collect-pose
+CMakeFiles/rswrapper.dir/clean:
+	$(MAKE) -f CMakeFiles/rswrapper.dir/build.make CMakeFiles/rswrapper.dir/clean
+.PHONY : CMakeFiles/rswrapper.dir/clean
 
 # clean rule for target.
-CMakeFiles/collect-pose.dir/clean:
-	$(MAKE) -f CMakeFiles/collect-pose.dir/build.make CMakeFiles/collect-pose.dir/clean
-.PHONY : CMakeFiles/collect-pose.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/collect-pose.dir/clean
+clean: CMakeFiles/rswrapper.dir/clean
 
 .PHONY : clean
 

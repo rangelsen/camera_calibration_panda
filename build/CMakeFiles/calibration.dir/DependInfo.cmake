@@ -10,14 +10,14 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/local/include/pcl-1.9"
+  "/usr/local/include/eigen3"
   "../.."
-  "/usr/local/include"
-  "/usr/local/include/opencv"
+  "../../rswrapper/src"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/marolab/voxelspacereconstruction/camera_calibration_panda/build/CMakeFiles/camera.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

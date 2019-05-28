@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=c++11 -g
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /home/marolab/voxelspacereconstruction/camera_calibration_panda/.. -isystem /usr/local/include -isystem /usr/local/include/opencv 
+CXX_INCLUDES = -isystem /usr/local/include/pcl-1.9 -isystem /usr/local/include/eigen3 -isystem /home/marolab/voxelspacereconstruction/camera_calibration_panda/.. -I/home/marolab/voxelspacereconstruction/camera_calibration_panda/../rswrapper/src 
 
